@@ -28,6 +28,7 @@ export const createRazorpayOrder = async (amount) => {
 
     if (response.status === 200) {
       console.log("Order created successfully!");
+      
     } else {
       console.log("Failed to create order!");
     }
