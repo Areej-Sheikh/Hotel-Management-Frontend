@@ -22,8 +22,8 @@ const Cards = () => {
             <div className="w-full h-52 relative">
               <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
                 <div className="w-full h-full flex items-center overflow-x-auto overflow-y-hidden no-scrollBar">
-                  {property.image &&
-                    property.image.map((image, index) => (
+                  {property.images &&
+                    property.images.map((image, index) => (
                       <img
                         key={index}
                         src={image}
@@ -35,7 +35,8 @@ const Cards = () => {
               </div>
             </div>
             <div className="p-4">
-              <h2 className="font-semibold text-lg">{property.location}</h2>
+              <h2 className="font-semibold text-lg">{property.title}</h2>
+              <h6 className="font-semibold text-sm">{property.location}</h6>
               <p className="text-gray-500 text-sm">{property.distance}</p>
               <p className="text-gray-500 text-sm">{property.dates}</p>
               <p className="text-black font-bold mt-2">${property.price}</p>
