@@ -6,6 +6,8 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 
+import { useDispatch, useSelector } from "react-redux";
+import { asynccurrentuser } from "./store/actions/userAction";
 import { useEffect } from "react";
 import SingleProperty from "./pages/SingleProperty";
 import Nav from "./pages/partials/Nav";
@@ -20,13 +22,21 @@ import Allproperties from "./pages/partials/AllProperties";
 import AllBookings from "./pages/partials/AllBookings";
 
 const App = () => {
+  const user = useSelector((store) => store.user);
+  console.log(user);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(asynccurrentuser());
+  }, [dispatch]);
 
   return (
     <>
       <Nav />
 
       <Routes>
-      <Route path="/admin-panel" element={<AdminPanel />}>
+        <Route path="/admin-panel" element={<AdminPanel />}>
           {/* Child Route */}
           <Route path="users" element={<AllUser />} />
           <Route path="properties" element={<Allproperties />} />

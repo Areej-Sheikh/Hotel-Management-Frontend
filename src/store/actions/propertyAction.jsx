@@ -6,7 +6,7 @@ import {
 } from "../reducers/propertySlice";
 import { searchPropertyService } from "../../api/propertyServices";
 
-export const seacrhPropertiesAction = (query) => async (dispatch) => {
+export const searchPropertiesAction = (query) => async (dispatch) => {
   try {
     const data = await searchPropertyService(query);
     dispatch(fetchPropertiesStart());
