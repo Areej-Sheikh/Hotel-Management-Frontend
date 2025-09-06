@@ -15,7 +15,7 @@ const propertySlice = createSlice({
     },
     fetchPropertiesSuccess(state, action) {
       state.isPropertiesloading = false;
-      state.properties = action.payload;
+      state.properties = action.payload.properties || [];
     },
     fetchPropertiesFailure(state, action) {
       state.isPropertiesloading = false;

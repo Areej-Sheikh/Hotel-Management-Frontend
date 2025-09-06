@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { searchPropertiesAction } from "../store/actions/propertyAction";
 
 const Home = () => {
-  const [query, setQuery] = useState("");
+  const [query] = useState("");
 
   const dispatch = useDispatch();
   useEffect(() => {
