@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
-
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { asynccurrentuser } from "./store/actions/userAction";
 import { useEffect } from "react";
@@ -24,7 +24,7 @@ import AllBookings from "./pages/partials/AllBookings";
 const App = () => {
   const user = useSelector((store) => store.user);
   console.log(user);
-
+  const [displayLogin, setDisplayLogin] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -51,7 +51,12 @@ const App = () => {
         <Route path="/Booking/:id" element={<BookingPage />} />
         <Route path="/profile/" element={<ProfilePage />} />
 
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={
+            <Login display={displayLogin} setDisplay={setDisplayLogin} />
+          }
+        />
         <Route path="/signup" element={<Signup />} />
         <Route
           path="/dashboard"
