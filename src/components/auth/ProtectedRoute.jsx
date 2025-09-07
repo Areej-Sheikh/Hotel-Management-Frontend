@@ -7,7 +7,7 @@ const ProtectedRoute = ({ children }) => {
     const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
     console.log(isLoggedIn);
 
-    return isLoggedIn ? children : navigate("/login");
+    return isLoggedIn ? children : navigate("/");
 };
 
 export default ProtectedRoute;

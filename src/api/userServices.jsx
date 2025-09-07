@@ -30,10 +30,10 @@ export const signupService = async (userData) => {
 
 export const logoutService = async () => {
   try {
-    const { data } = await axios.get("/users/logout");
+    const { data } = await axios.post("/users/logout");
     return data;
   } catch (error) {
-    toast.error(error.response.data.message);
+    toast.error(error.response?.data?.message || "Logout failed");
   }
 };
 
