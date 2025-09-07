@@ -1,9 +1,9 @@
-import { useEffect, useState, useSelector } from "react";
+import { useEffect, useState } from "react";
 import Filter from "./Filter";
 import Login from "../Login";
 import Signup from "../Signup";
 import { Link, useLocation } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 const Nav = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [isLoginVisible, setIsLoginVisible] = useState(false);
