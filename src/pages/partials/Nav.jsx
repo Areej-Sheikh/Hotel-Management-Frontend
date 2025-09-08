@@ -3,46 +3,49 @@ import Filter from "./Filter";
 import Login from "../Login";
 import Signup from "../Signup";
 import { Link, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { asynclogout } from "../../store/actions/userAction";
+import { toast } from "react-toastify";
+
 const Nav = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [isLoginVisible, setIsLoginVisible] = useState(false);
   const [isSignupVisible, setIsSignupVisible] = useState(false);
-
-  const filterHandler = () => {
-    setIsFilterVisible(!isFilterVisible);
-  };
-  const loginHandler = () => {
-    setIsLoginVisible(!isLoginVisible);
-  };
-  const signupHandler = () => {
-    setIsSignupVisible(!isLoginVisible);
-  };
-  const isAdmin = useSelector((store) => store.user.user?.isAdmin);
-
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
-  const toggleMenu = () => {
-    setIsMenuVisible(!isMenuVisible);
+  const filterHandler = () => setIsFilterVisible(!isFilterVisible);
+  const loginHandler = () => setIsLoginVisible(!isLoginVisible);
+  const signupHandler = () => setIsSignupVisible(!isSignupVisible);
+  const dispatch = useDispatch();
+  const logoutHandler = async () => {
+    await dispatch(asynclogout());
+    toast.success("Logged out successfully");
+    toast.info("Redirecting to home page");
   };
+  const toggleMenu = () => setIsMenuVisible(!isMenuVisible);
 
-  const handleOutsideClick = (e) => {
-    if (
-      !document.querySelector(".menu").contains(e.target) &&
-      !document.querySelector(".menu-handler").contains(e.target)
-    ) {
-      setIsMenuVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleOutsideClick);
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, []);
-
+  const isAdmin = useSelector((store) => store.user.user?.isAdmin);
+  const { isLoggedIn } = useSelector((store) => store.user);
   const { pathname } = useLocation();
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      const menu = document.querySelector(".menu");
+      const handler = document.querySelector(".menu-handler");
+      if (
+        menu &&
+        handler &&
+        !menu.contains(e.target) &&
+        !handler.contains(e.target)
+      ) {
+        setIsMenuVisible(false);
+      }
+    };
+
+    document.addEventListener("click", handleOutsideClick);
+    return () => document.removeEventListener("click", handleOutsideClick);
+  }, []);
 
   return (
     <>
@@ -53,22 +56,28 @@ const Nav = () => {
               draggable="false"
               className="h-full object-cover"
               src="/images/logo.png"
-              alt=""
+              alt="Logo"
             />
           </Link>
+
           <div className="flex gap-8 w-fit items-center">
-            <Link to={"/property/create"} className="font-[600] text-sm">
-              Add your property
-            </Link>
+            {isLoggedIn && (
+              <Link to={"/property/create"} className="font-[600] text-sm">
+                Add your property
+              </Link>
+            )}
+
             {isAdmin && (
               <Link to={"/admin-panel/users"} className="font-[600] text-sm">
                 Admin panel
               </Link>
             )}
+
             <div>
               <i className="ri-global-line text-lg"></i>
             </div>
-            {pathname == "/" && (
+
+            {pathname === "/" && (
               <div
                 onClick={filterHandler}
                 className="py-2 px-5 border border-zinc-400 rounded-lg text-zinc-500 cursor-pointer"
@@ -76,54 +85,64 @@ const Nav = () => {
                 Filters
               </div>
             )}
+
+            {/* Menu */}
             <div
               onClick={toggleMenu}
-              className="flex cursor-pointer relative items-center border-2 border[#666] py-1 px-3 rounded-full gap-3 menu-handler"
+              className="flex cursor-pointer relative items-center border-2 border-[#666] py-1 px-3 rounded-full gap-3 menu-handler"
             >
               <i className="ri-menu-line font-bold"></i>
-              <div className="bg-[#666] h-8 aspect-square flex items-end justify-center rounded-full ">
-                <div className="rounded-full text-white text-lg  overflow-hidden  ">
+              <div className="bg-[#666] h-8 aspect-square flex items-end justify-center rounded-full">
+                <div className="rounded-full text-white text-lg overflow-hidden">
                   <i className="ri-user-3-fill text-white"></i>
                 </div>
               </div>
+
+              {/* Dropdown menu */}
               <div
                 className={`menu absolute ${
-                  isMenuVisible ? "initial" : "hidden"
+                  isMenuVisible ? "block" : "hidden"
                 } top-[110%] w-[280%] shadow-[0_4px_20px_3px_rgba(0,0,0,0.1)] overflow-hidden z-[2] right-0 bg-zinc-50 rounded-xl`}
               >
-                <Link to={"/profile"}>
-                  <h3 className="text-sm px-4 hover:bg-zinc-200/[.5] cursor-pointer transition-all ease-in-out duration-[.5s] py-6">
-                    My profile
-                  </h3>
-                </Link>
-                <h3
-                  onClick={signupHandler}
-                  className="text-sm px-4 hover:bg-zinc-200/[.5] cursor-pointer transition-all ease-in-out duration-[.5s] py-6"
-                >
-                  Sign up
-                </h3>
-                <h3
-                  onClick={loginHandler}
-                  className="text-sm px-4 hover:bg-zinc-200/[.5] cursor-pointer transition-all ease-in-out duration-[.5s] py-6 border-b border-zinc-300"
-                >
-                  Log in
-                </h3>
+                {isLoggedIn && (
+                  <Link to={"/profile"}>
+                    <h3 className="text-sm px-4 hover:bg-zinc-200/[.5] cursor-pointer transition-all py-6">
+                      My profile
+                    </h3>
+                  </Link>
+                )}
+                {!isLoggedIn && (
+                  <>
+                    <h3
+                      onClick={signupHandler}
+                      className="text-sm px-4 hover:bg-zinc-200/[.5] cursor-pointer transition-all py-6"
+                    >
+                      Sign up
+                    </h3>
+                    <h3
+                      onClick={loginHandler}
+                      className="text-sm px-4 hover:bg-zinc-200/[.5] cursor-pointer transition-all py-6 border-b border-zinc-300"
+                    >
+                      Log in
+                    </h3>
+                  </>
+                )}
 
-                <h3 className="text-sm px-4 hover:bg-zinc-200/[.5] cursor-pointer transition-all ease-in-out duration-[.5s] py-6">
-                  Host an experience
-                </h3>
-                <h3 className="text-sm px-4 hover:bg-zinc-200/[.5] cursor-pointer transition-all ease-in-out duration-[.5s] py-6">
-                  Help Center
-                </h3>
-                <h3 className="text-sm px-4 hover:bg-zinc-200/[.5] cursor-pointer transition-all ease-in-out duration-[.5s] py-6">
-                  Logout
-                </h3>
+                {isLoggedIn && (
+                  <h3
+                    onClick={logoutHandler}
+                    className="text-sm px-4 hover:bg-zinc-200/[.5] cursor-pointer transition-all py-6"
+                  >
+                    Logout
+                  </h3>
+                )}
               </div>
             </div>
           </div>
         </div>
       </nav>
 
+      {/* Modals */}
       {isFilterVisible && (
         <Filter display={isFilterVisible} setDisplay={setIsFilterVisible} />
       )}
