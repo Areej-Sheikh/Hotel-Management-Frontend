@@ -8,11 +8,12 @@ import { searchPropertyService } from "../../api/propertyServices";
 
 export const searchPropertiesAction = (query) => async (dispatch) => {
   try {
-    const data = await searchPropertyService(query);
     dispatch(fetchPropertiesStart());
+    const data = await searchPropertyService(query);
     dispatch(fetchPropertiesSuccess(data));
   } catch (error) {
-    toast.error(error.response.data.message);
-    fetchPropertiesFailure(error.response.data.message);
+    toast.error(error.response?.data?.message || "Something went wrong");
+    dispatch(fetchPropertiesFailure(error.response?.data?.message || "Error"));
   }
 };
+

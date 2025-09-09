@@ -1,5 +1,4 @@
-// NotFound.jsx
-import { Link } from "react-router-dom"; // optional, if you're using react-router
+import { Link } from "react-router-dom";
 
 const NotFound = () => {
   return (

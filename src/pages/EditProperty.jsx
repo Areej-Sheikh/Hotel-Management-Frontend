@@ -8,7 +8,6 @@ const EditProperty = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    // Convert images string to array separated by spaces
     data.images = data.images.split(" ");
     data.amenities = data.amenities.split(" ");
 

@@ -8,7 +8,6 @@ const BookingPage = () => {
     .split("&")
     .reduce((acc, item) => {
       const [key, value] = item.split("=");
-      // Remove surrounding quotes from value if present
       acc[key] = value.replace(/^"|"$/g, "");
       return acc;
     }, {});

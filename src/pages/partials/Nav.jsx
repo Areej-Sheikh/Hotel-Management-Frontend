@@ -28,7 +28,6 @@ const Nav = () => {
   const { isLoggedIn } = useSelector((store) => store.user);
   const { pathname } = useLocation();
 
-  // Close menu when clicking outside
   useEffect(() => {
     const handleOutsideClick = (e) => {
       const menu = document.querySelector(".menu");

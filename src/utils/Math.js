@@ -3,20 +3,16 @@ export const calculateAverageRating = (nums) => {
   return sum / nums.length;
 };
 
-// Utility function to calculate duration
 export const calculateDuration = (date) => {
   if (!date) return "-";
 
   const currentDate = new Date();
   const createdAtDate = new Date(date);
 
-  // Difference in milliseconds
   const differenceTime = Math.abs(currentDate - createdAtDate);
 
-  // Convert to days
   const differenceDays = Math.ceil(differenceTime / (1000 * 60 * 60 * 24));
 
-  // Convert to weeks and months
   const differenceWeeks = Math.floor(differenceDays / 7);
   const differenceMonths = Math.floor(differenceDays / 30);
 

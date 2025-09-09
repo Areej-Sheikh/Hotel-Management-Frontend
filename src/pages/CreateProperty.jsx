@@ -14,7 +14,6 @@ const CreateProperty = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    // Convert images string to array separated by commas
     const formattedData = {
       ...data,
       images: data.images.split(", "),

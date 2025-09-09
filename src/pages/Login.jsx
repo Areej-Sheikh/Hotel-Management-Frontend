@@ -24,7 +24,7 @@ const Login = ({ display, setDisplay }) => {
     setDisplay(false);
   };
 
-  if (!display) return null; // If display is false, do not render the component
+  if (!display) return null; 
 
   return (
     <div className="loginPage flex fixed z-[2] top-0 left-0 w-full bg-zinc-800/[.4] h-screen items-center justify-center ">

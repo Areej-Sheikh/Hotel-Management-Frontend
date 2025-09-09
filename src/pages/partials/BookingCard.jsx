@@ -2,11 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const BookingCard = ({nightRate }) => {
-  const [guests, setGuests] = useState(1); // Initialize guests state with default value 1
-  const [checkinDate, setCheckinDate] = useState(new Date().toISOString().split('T')[0]); // Current date as checkin date
-  const [checkoutDate, setCheckoutDate] = useState(new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().split('T')[0]); // 2 days ahead as checkout date
-  const [nights, setNights] = useState(5); // Calculate nights based on checkin and checkout dates
-  
+  const [guests, setGuests] = useState(1);
+  const [checkinDate, setCheckinDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [checkoutDate, setCheckoutDate] = useState(
+    new Date(new Date().setDate(new Date().getDate() + 2))
+      .toISOString()
+      .split("T")[0]
+  );
+  const [nights, setNights] = useState(5);
   useEffect(() => {
       const checkin = new Date(checkinDate);
       const checkout = new Date(checkoutDate);
