@@ -85,7 +85,6 @@ const Nav = () => {
               </div>
             )}
 
-            {/* Menu */}
             <div
               onClick={toggleMenu}
               className="flex cursor-pointer relative items-center border-2 border-[#666] py-1 px-3 rounded-full gap-3 menu-handler"
@@ -97,7 +96,6 @@ const Nav = () => {
                 </div>
               </div>
 
-              {/* Dropdown menu */}
               <div
                 className={`menu absolute ${
                   isMenuVisible ? "block" : "hidden"
@@ -141,7 +139,6 @@ const Nav = () => {
         </div>
       </nav>
 
-      {/* Modals */}
       {isFilterVisible && (
         <Filter display={isFilterVisible} setDisplay={setIsFilterVisible} />
       )}

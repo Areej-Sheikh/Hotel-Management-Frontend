@@ -1,4 +1,3 @@
-// src/App.js
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Home from "./pages/Home";
@@ -49,7 +48,6 @@ const App = () => {
             </ProtectedRoute>
           }
         >
-          {/* Child Route */}
           <Route path="users" element={<AllUser />} />
           <Route path="properties" element={<Allproperties />} />
           <Route path="bookings" element={<AllBookings />} />

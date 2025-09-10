@@ -23,7 +23,7 @@ export const createRazorpayOrder = async (amount) => {
   try {
     const response = await axios.post("/payments", {
       amount,
-      currency: "INR",
+      currency: "$",
     });
 
     if (response.status === 200) {
@@ -54,7 +54,7 @@ const handleRazorpayScreen = async (amount) => {
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: amount,
-        currency: "INR",
+        currency: "$",
         name: "Aura Stay",
         description: "Payment Gateway",
         handler: function (response) {

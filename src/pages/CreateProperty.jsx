@@ -98,7 +98,7 @@ const CreateProperty = () => {
                 )}
               </div>
               <div className="p-4 text-md relative w-full flex justify-center items-center gap-3  border-b border-zinc-500">
-                <label>Price (INR per night):</label>
+                <label>Price ($ per night):</label>
                 <input
                   className="w-[65%] h-full focus:outline-none text-xl "
                   type="number"

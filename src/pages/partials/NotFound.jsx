@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 const NotFound = () => {
   return (
     <div className="bg-gray-100 h-screen flex flex-col items-center justify-center">
-      {/* Emoji / SVG */}
       <svg
         className="relative animate-[bounce404_2.5s_infinite]"
         enableBackground="new 0 0 226 249.135"
@@ -92,15 +91,13 @@ const NotFound = () => {
         />
       </svg>
 
-      {/* Text */}
       <div className="tracking-widest mt-6 text-center">
         <span className="text-gray-500 text-6xl block">404</span>
         <span className="text-gray-500 text-xl">
-          Sorry, we couldn't find what you are looking for!
+          Sorry, we couldnt find what you are looking for!
         </span>
       </div>
 
-      {/* Button */}
       <div className="mt-8">
         <Link
           to="/"
@@ -110,7 +107,6 @@ const NotFound = () => {
         </Link>
       </div>
 
-      {/* Custom animation */}
       <style>
         {`
           @keyframes bounce404 {

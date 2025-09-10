@@ -149,12 +149,11 @@ const SingleProperty = () => {
             </div>
 
             <div className="w-fit mb-4">
-              <BookingCard nightRate={propertyData.price} />
+              <BookingCard property={propertyData} />
             </div>
           </div>
 
           <div className=" mx-auto py-4  relative">
-            {/* Overall Rating */}
             <div className="text-center mb-8">
               <div className="flex items-start justify-center">
                 <img
@@ -180,7 +179,6 @@ const SingleProperty = () => {
               </p>
             </div>
 
-            {/* Rating Metrics */}
             <div className="grid grid-cols-3 sm:grid-cols-6 gap-4 mb-8">
               {ratings.map((rating) => (
                 <div key={rating.label} className="text-center">
@@ -193,7 +191,6 @@ const SingleProperty = () => {
               ))}
             </div>
 
-            {/* Reviews */}
             <div className="border-t pt-6 grid grid-cols-2 gap-4">
               {reviewData?.length > 0 &&
                 reviewData.slice(0, 6).map((review, index) => (

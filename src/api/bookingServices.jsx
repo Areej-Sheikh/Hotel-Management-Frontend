@@ -27,3 +27,12 @@ export const cancelBookingService = async (bookingId) => {
     toast.error(error.response.data.message);
   }
 };
+
+export const getAllBookingsService = async () => {
+  try {
+    const { data } = await axios.get("/bookings");
+    return data;
+  } catch (error) {
+    toast.error(error.response.data.message);
+  }
+};

@@ -1,12 +1,11 @@
-import React from "react";
-
 const Footer = () => {
   return (
     <footer className="bg-gray-100 py-8 px-20">
       <div className="container mx-auto ">
-        {/* Inspiration Section */}
         <div className="border-b border-gray-300 pb-6 mb-6">
-          <h2 className="text-lg font-semibold mb-4">Inspiration for future getaways</h2>
+          <h2 className="text-lg font-semibold mb-4">
+            Inspiration for future getaways
+          </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
             <div>
               <h3 className="font-medium mb-2">Popular</h3>
@@ -41,7 +40,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Footer Links */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
           <div>
             <h3 className="font-semibold mb-3">Support</h3>
@@ -77,21 +75,34 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Footer Bottom */}
         <div className="flex flex-col sm:flex-row justify-between items-center mt-8 text-sm text-gray-500">
-          <p>© 2024 Airbnb, Inc. · Privacy · Terms · Sitemap · Company details</p>
+          <p>
+            © 2024 Airbnb, Inc. · Privacy · Terms · Sitemap · Company details
+          </p>
           <div className="flex items-center space-x-4 mt-4 sm:mt-0">
             <span>English (IN)</span>
-            <span>₹ INR</span>
+            <span>$ </span>
             <div className="flex space-x-3">
-              <a href="#" aria-label="Facebook" className="flex h-6 aspect-square items-center justify-center text-xl bg-zinc-800 ">
-              <i className="ri-facebook-fill text-zinc-100"></i>
+              <a
+                href="#"
+                aria-label="Facebook"
+                className="flex h-6 aspect-square items-center justify-center text-xl bg-zinc-800 "
+              >
+                <i className="ri-facebook-fill text-zinc-100"></i>
               </a>
-              <a href="#" aria-label="Twitter" className="flex h-6 aspect-square items-center justify-center text-xl bg-zinc-800 ">
-              <i className="ri-twitter-fill text-zinc-100"></i>
+              <a
+                href="#"
+                aria-label="Twitter"
+                className="flex h-6 aspect-square items-center justify-center text-xl bg-zinc-800 "
+              >
+                <i className="ri-twitter-fill text-zinc-100"></i>
               </a>
-              <a href="#" aria-label="Twitter" className="flex h-6 aspect-square items-center justify-center text-xl bg-zinc-800 ">
-              <i className="ri-instagram-line text-zinc-100"></i>
+              <a
+                href="#"
+                aria-label="Twitter"
+                className="flex h-6 aspect-square items-center justify-center text-xl bg-zinc-800 "
+              >
+                <i className="ri-instagram-line text-zinc-100"></i>
               </a>
             </div>
           </div>

@@ -125,13 +125,11 @@ const ProfilePage = () => {
     <div className="h-full w-full pt-28 px-20 bg-zinc-50">
       <div className="flex h-full relative w-full gap-8">
         <div className="w-[30vw] p-6 py-10 sticky top-[16vh] bg-white rounded-3xl h-fit shadow-[0px_0px_30px_2px_#e4e4e7] flex flex-col items-center space-y-6">
-          {/* Profile Circle */}
           <div>
             <div className="flex items-center justify-center w-24 h-24 bg-black text-white text-5xl font-bold rounded-full mx-auto">
               {user.user?.username?.charAt(0).toUpperCase() || "U"}
             </div>
 
-            {/* Name and Role */}
             <div className="text-center mt-4">
               <h2 className="text-4xl text-black font-semibold">
                 {user.user?.username || "Guest"}
@@ -141,7 +139,6 @@ const ProfilePage = () => {
               </p>
             </div>
           </div>
-          {/* Month Info */}
           <div className="text-center">
             <p className="text-lg font-bold">
               {calculateDuration(user.user?.createdAt)}
@@ -149,7 +146,6 @@ const ProfilePage = () => {
             <p className="text-gray-500 text-xs">on AuraStay</p>
           </div>
 
-          {/* Additional Info */}
           <div className="text-center space-y-1 text-gray-700 text-sm">
             <p>
               Email: <span className="font-semibold">{user.user?.email}</span>
@@ -231,7 +227,7 @@ const ProfilePage = () => {
                 <div className="flex items-center w-full justify-between">
                   <h3 className="text-md font-bold ">Price </h3>
                   <h3 className={`text-sm font-light`}>
-                    ₹{booking.totalPrice}
+                    ${booking.totalPrice}
                   </h3>
                 </div>
                 <div className="flex items-center w-full justify-between">

@@ -1,7 +1,21 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-const BookingCard = ({nightRate }) => {
+import PropTypes from "prop-types";
+const BookingCard = ({ property }) => {
+  BookingCard.propTypes = {
+    property: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      title: PropTypes.string,
+      price: PropTypes.number,
+      images: PropTypes.arrayOf(PropTypes.string),
+      amenities: PropTypes.arrayOf(PropTypes.string),
+      location: PropTypes.string,
+      distance: PropTypes.string,
+      totalReview: PropTypes.number,
+      description: PropTypes.string,
+    }).isRequired,
+  };
+  console.log("Property data:", property);
   const [guests, setGuests] = useState(1);
   const [checkinDate, setCheckinDate] = useState(
     new Date().toISOString().split("T")[0]
@@ -12,18 +26,19 @@ const BookingCard = ({nightRate }) => {
       .split("T")[0]
   );
   const [nights, setNights] = useState(5);
+  const nightRate = property.price;
   useEffect(() => {
-      const checkin = new Date(checkinDate);
-      const checkout = new Date(checkoutDate);
-      const difference = checkout.getTime() - checkin.getTime();
-      const totalDays = Math.ceil(difference / (1000 * 60 * 60 * 24));
-      setNights(totalDays);
-      if(checkinDate === checkoutDate) {
-        setNights(1);
-      }
+    const checkin = new Date(checkinDate);
+    const checkout = new Date(checkoutDate);
+    const difference = checkout.getTime() - checkin.getTime();
+    const totalDays = Math.ceil(difference / (1000 * 60 * 60 * 24));
+    setNights(totalDays);
+    if (checkinDate === checkoutDate) {
+      setNights(1);
+    }
   }, [checkinDate, checkoutDate]);
 
-  const totalBeforeTaxes = nightRate * nights * guests; // Multiply by guests for dynamic pricing
+  const totalBeforeTaxes = nightRate * nights * guests;
 
   return (
     <div className="border p-6 max-w-sm mx-auto shadow-md rounded-lg">
@@ -67,14 +82,14 @@ const BookingCard = ({nightRate }) => {
       </div>
 
       <Link
-        to={`/booking/1?checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&guests=${guests}&nights=${nights}&price=${nightRate}`}
+        to={`/booking/${property._id}?checkinDate=${checkinDate}&checkoutDate=${checkoutDate}&guests=${guests}&nights=${nights}&price=${nightRate}`}
       >
         <button className="bg-[#b17f44] text-white font-bold py-2 px-4 w-full rounded-lg mb-4">
           Reserve
         </button>
       </Link>
       <p className="text-sm text-gray-500 text-center mb-4">
-        You won't be charged yet
+        You wont be charged yet
       </p>
 
       <div className="text-sm">

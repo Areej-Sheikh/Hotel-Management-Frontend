@@ -37,7 +37,6 @@ const Filter = ({ display, setDisplay }) => {
         className="py-1 w-[35%] bg-zinc-50 rounded-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
         <div className="w-full py-4 relative border-b border-[#dfdfdf]">
           <div className="absolute left-[3%] top-1/2 -translate-y-1/2">
             <i
@@ -50,9 +49,7 @@ const Filter = ({ display, setDisplay }) => {
           </h1>
         </div>
 
-        {/* Body */}
         <div className="pt-5 px-5 ">
-          {/* Location Filter */}
           <div className="flex flex-col gap-4">
             <h1 className="text-lg font-bold">Location</h1>
             <select
@@ -71,10 +68,9 @@ const Filter = ({ display, setDisplay }) => {
             </select>
           </div>
 
-          {/* Price Range Filter */}
           <div className="flex flex-col gap-4 my-7">
             <h1 className="text-lg font-bold">
-              Price Range <span className="text-sm text-zinc-500">(INR)</span>
+              Price Range <span className="text-sm text-zinc-500">($)</span>
             </h1>
             <div className="flex gap-4">
               <input
@@ -95,7 +91,6 @@ const Filter = ({ display, setDisplay }) => {
               />
             </div>
 
-            {/* Submit Button */}
             <button
               onClick={handleSubmit(onSubmit)}
               className="w-full text-center bg-[#b17f44] mt-4 text-white rounded-md py-3"

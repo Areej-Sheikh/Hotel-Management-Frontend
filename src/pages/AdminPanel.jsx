@@ -1,10 +1,8 @@
-// App.jsx
 import { NavLink, Outlet } from "react-router-dom";
 
 const AdminPanel = () => {
   return (
     <div className="min-h-screen flex bg-zinc-50 px-20 pt-28 pb-10 relative">
-      {/* Sidebar */}
       <aside className="w-[25%] bg-white shadow-xl rounded-xl sticky top-[16vh] h-[80vh]  ">
         <div className="p-4 mt-auto">
           <div className="flex items-center">
@@ -65,7 +63,6 @@ const AdminPanel = () => {
         </nav>
       </aside>
 
-      {/* Main Content */}
       <div className="w-full h-fit">
         <Outlet />
       </div>

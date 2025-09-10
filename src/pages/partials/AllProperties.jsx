@@ -1,9 +1,6 @@
-import React from "react";
-
 const Allproperties = () => {
   return (
     <main className="flex-1 px-6 ">
-      {/* Last Tasks */}
       <section className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-xl font-bold mb-4">Properties</h2>
         <table className=" w-full text-left">
@@ -37,17 +34,14 @@ const Allproperties = () => {
                 </button>
               </td>
             </tr>
-            {/* Add other rows here */}
           </tbody>
         </table>
       </section>
 
-      {/* Productivity and Projects */}
       <section className="grid grid-cols-2 gap-6 mt-6">
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-bold mb-4">Productivity</h2>
           <div>
-            {/* Placeholder for chart */}
             <div className="h-32 bg-gray-200 flex items-center justify-center">
               Chart Placeholder
             </div>
@@ -63,7 +57,6 @@ const Allproperties = () => {
                 <span className="ml-4">7 files</span>
               </div>
             </li>
-            {/* Add other projects */}
           </ul>
         </div>
       </section>
