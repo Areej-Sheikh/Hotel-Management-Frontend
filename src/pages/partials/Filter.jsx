@@ -70,12 +70,12 @@ const Filter = ({ display, setDisplay }) => {
 
           <div className="flex flex-col gap-4 my-7">
             <h1 className="text-lg font-bold">
-              Price Range <span className="text-sm text-zinc-500">($)</span>
+              Price Range <span className="text-sm text-zinc-500">(₹)</span>
             </h1>
             <div className="flex gap-4">
               <input
                 type="number"
-                placeholder="Min"
+                placeholder="Min (₹)"
                 className="border p-2 rounded-md w-full"
                 max="99999999"
                 min="0"
@@ -83,7 +83,7 @@ const Filter = ({ display, setDisplay }) => {
               />
               <input
                 type="number"
-                placeholder="Max"
+                placeholder="Max (₹)"
                 className="border p-2 rounded-md w-full"
                 max="99999999"
                 min="0"

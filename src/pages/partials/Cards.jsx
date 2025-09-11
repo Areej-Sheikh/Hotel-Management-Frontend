@@ -39,7 +39,7 @@ const Cards = () => {
               <h6 className="font-semibold text-sm">{property.location}</h6>
               <p className="text-gray-500 text-sm">{property.distance}</p>
               <p className="text-gray-500 text-sm">{property.dates}</p>
-              <p className="text-black font-bold mt-2">${property.price}</p>
+              <p className="text-black font-bold mt-2">₹{property.price}</p>
               {property.rating && (
                 <p className="text-yellow-500 text-sm mt-1">
                   ⭐ {property.rating.toFixed(2)}

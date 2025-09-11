@@ -185,7 +185,7 @@ const ProfilePage = () => {
                         {property.title}
                       </h2>
                       <p className="text-black font-bold">
-                        ${property.price} / night
+                        ₹{property.price} / night
                       </p>
                       <p className="text-gray-500 text-sm">
                         {property.location}

@@ -22,13 +22,12 @@ const paymentFetch = async (paymentId) => {
 export const createRazorpayOrder = async (amount) => {
   try {
     const response = await axios.post("/payments", {
-      amount,
-      currency: "$",
+      amount: amount * 100,
+      currency: "INR",
     });
 
     if (response.status === 200) {
       console.log("Order created successfully!");
-      
     } else {
       console.log("Failed to create order!");
     }
@@ -53,8 +52,8 @@ const handleRazorpayScreen = async (amount) => {
     return new Promise((resolve, reject) => {
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-        amount: amount,
-        currency: "$",
+        amount: amount, // already in paise
+        currency: "INR",
         name: "Aura Stay",
         description: "Payment Gateway",
         handler: function (response) {

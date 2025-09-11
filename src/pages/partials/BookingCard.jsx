@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+
 const BookingCard = ({ property }) => {
   BookingCard.propTypes = {
     property: PropTypes.shape({
@@ -15,7 +16,9 @@ const BookingCard = ({ property }) => {
       description: PropTypes.string,
     }).isRequired,
   };
+
   console.log("Property data:", property);
+
   const [guests, setGuests] = useState(1);
   const [checkinDate, setCheckinDate] = useState(
     new Date().toISOString().split("T")[0]
@@ -27,6 +30,7 @@ const BookingCard = ({ property }) => {
   );
   const [nights, setNights] = useState(5);
   const nightRate = property.price;
+
   useEffect(() => {
     const checkin = new Date(checkinDate);
     const checkout = new Date(checkoutDate);
@@ -43,7 +47,7 @@ const BookingCard = ({ property }) => {
   return (
     <div className="border p-6 max-w-sm mx-auto shadow-md rounded-lg">
       <h2 className="text-xl font-bold mb-4">
-        ${nightRate.toLocaleString()}{" "}
+        ₹{nightRate.toLocaleString()}{" "}
         <span className="text-sm"> per night</span>
       </h2>
 
@@ -89,19 +93,19 @@ const BookingCard = ({ property }) => {
         </button>
       </Link>
       <p className="text-sm text-gray-500 text-center mb-4">
-        You wont be charged yet
+        You won’t be charged yet
       </p>
 
       <div className="text-sm">
         <div className="flex justify-between mb-2">
           <span>
-            ${nightRate.toLocaleString()} x {nights} nights x {guests} guests
+            ₹{nightRate.toLocaleString()} x {nights} nights x {guests} guests
           </span>
-          <span>${(nightRate * nights * guests).toLocaleString()}</span>
+          <span>₹{totalBeforeTaxes.toLocaleString()}</span>
         </div>
         <div className="flex justify-between font-bold text-lg">
           <span>Total before taxes</span>
-          <span>${totalBeforeTaxes.toLocaleString()}</span>
+          <span>₹{totalBeforeTaxes.toLocaleString()}</span>
         </div>
       </div>
     </div>

@@ -81,7 +81,7 @@ const Footer = () => {
           </p>
           <div className="flex items-center space-x-4 mt-4 sm:mt-0">
             <span>English (IN)</span>
-            <span>$ </span>
+            <span>Currency: ₹</span>
             <div className="flex space-x-3">
               <a
                 href="#"
@@ -99,7 +99,7 @@ const Footer = () => {
               </a>
               <a
                 href="#"
-                aria-label="Twitter"
+                aria-label="Instagram"
                 className="flex h-6 aspect-square items-center justify-center text-xl bg-zinc-800 "
               >
                 <i className="ri-instagram-line text-zinc-100"></i>
