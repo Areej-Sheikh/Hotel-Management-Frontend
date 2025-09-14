@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children }) => {
   console.log(isLoggedIn);
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate("/not-found");
+      navigate("/");
     }
   }, [isLoggedIn, navigate]);
 

@@ -22,23 +22,26 @@ const paymentFetch = async (paymentId) => {
 export const createRazorpayOrder = async (amount) => {
   try {
     const response = await axios.post("/payments", {
-      amount: amount * 100,
+      amount: amount,
       currency: "INR",
     });
 
+    console.log("Amount received from frontend:", amount);
+    console.log("Amount sent to Razorpay (paise):", amount * 100);
+
     if (response.status === 200) {
       console.log("Order created successfully!");
-    } else {
-      console.log("Failed to create order!");
+      // pass the inner 'data' object
+      return handleRazorpayScreen(response.data.data);
     }
-
-    return handleRazorpayScreen(response.data.order.amount);
   } catch (error) {
-    toast.error(error.response.data.message);
+    toast.error(
+      error.response?.data?.message || "Payment order creation failed"
+    );
   }
 };
 
-const handleRazorpayScreen = async (amount) => {
+const handleRazorpayScreen = async (orderData) => {
   try {
     const res = await loadScript(
       "https://checkout.razorpay.com/v1/checkout.js"
@@ -49,11 +52,14 @@ const handleRazorpayScreen = async (amount) => {
       return;
     }
 
+    console.log("Razorpay checkout amount (paise):", Number(orderData.amount));
+
     return new Promise((resolve, reject) => {
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-        amount: amount, // already in paise
-        currency: "INR",
+        amount: Number(orderData.amount), // ✅ always number in paise
+        currency: orderData.currency || "INR",
+        order_id: orderData.id, // required by Razorpay
         name: "Aura Stay",
         description: "Payment Gateway",
         handler: function (response) {
@@ -70,9 +76,11 @@ const handleRazorpayScreen = async (amount) => {
       paymentObject.open();
     });
   } catch (error) {
-    toast.error("Error in payment!", error.message);
+    toast.error("Error in payment!");
+    console.error(error);
   }
 };
+
 
 const loadScript = (src) => {
   return new Promise((resolve) => {

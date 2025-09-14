@@ -64,28 +64,31 @@ const BookingPage = () => {
       Number(data.price) * Number(data.nights) * Number(data.guests);
     setTotalAmount(total);
   }, [id, search]);
+console.log("Total Amount:", totalAmount);
 
-  console.log(paymentId);
-  console.log(status);
-  console.log("Property data:", property);
+const handleConfirmOrder = async () => {
+  try {
+    const paymentResult = await createRazorpayOrder(totalAmount);
 
-  const handleConfirmOrder = async () => {
-    try {
-      const paymentResult = await createRazorpayOrder(totalAmount);
+    console.log("Payment Result:", paymentResult);
 
-      if (paymentResult?.status === "authorized") {
-        setStatus(paymentResult.status);
-        setPaymentId(paymentResult.paymentId);
-        await createBookings();
-      } else {
-        toast.error("Payment failed. Please try again.");
-        navigate("/");
-      }
-    } catch (error) {
-      toast.error("Something went wrong with payment.");
-      console.error("Payment error:", error);
+    if (
+      paymentResult?.status === "captured" ||
+      paymentResult?.status === "authorized"
+    ) {
+      // Razorpay marks payments as "captured" (successful) or sometimes "authorized"
+      setStatus(paymentResult.status);
+      setPaymentId(paymentResult.id || paymentResult.paymentId);
+      await createBookings();
+    } else {
+      toast.error("Payment failed. Please try again.");
+      navigate("/");
     }
-  };
+  } catch (error) {
+    toast.error("Something went wrong with payment.");
+    console.error("Payment error:", error);
+  }
+};
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
@@ -93,11 +96,27 @@ const BookingPage = () => {
       month: "short",
     })} ${date.getFullYear()}`;
   };
+  useEffect(() => {
+    if (paymentId) {
+      console.log("Payment ID:", paymentId);
+    }
+  }, [paymentId]);
+
+  useEffect(() => {
+    if (status) {
+      console.log("Payment Status:", status);
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (property) {
+      console.log("Property data:", property);
+    }
+  }, [property]);
 
   return (
     <div className="h-screen mt-10 w-full bg-zinc-50 px-40 flex flex-col justify-center items-center">
       <div className="max-w-6xl w-full bg-white rounded-lg shadow-lg p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Left Section */}
         <div className="col-span-2">
           <h1 className="text-2xl font-bold mb-6">Request to book</h1>
 
@@ -117,7 +136,6 @@ const BookingPage = () => {
               </div>
             </div>
 
-            {/* Centered Book Now button */}
             <div className="flex justify-center mt-8">
               <button
                 onClick={handleConfirmOrder}
@@ -129,41 +147,38 @@ const BookingPage = () => {
           </section>
         </div>
 
-        {/* Right Section */}
         <div>
           <div className="border rounded-lg p-4 flex flex-col gap-4 h-full">
-            {/* Image + Title */}
-            <div className="flex-row gap-4 mb-6">
+            <div className="flex-row gap-4 ">
               <img
                 src={
                   property?.property?.images?.[0] ||
                   "https://via.placeholder.com/80"
                 }
                 alt={property?.property?.title || "Hotel"}
-                className="w-20 h-20 rounded-lg object-cover"
+                className="w-30 h-30 rounded-lg object-cover"
               />
               <div>
                 <p className="font-bold text-lg mt-3 text-stone-950">
                   {property?.property?.title || "Hotel Name"}
                 </p>
                 <p className="text-sm text-gray-600">
-                  {property?.property?.location || "Room in boutique hotel"}
+                  {property?.property?.location || "Room Location"}
                 </p>
               </div>
             </div>
 
-            {/* Price details */}
-            <h2 className="text-lg font-semibold   text-stone-950">
+            <h2 className="text-lg font-semibold  text-stone-950">
               Price details
             </h2>
-            <div className="flex justify-between text-sm mb-2">
+            <div className="flex justify-between text-sm">
               <p>
                 ₹{Number(data.price).toLocaleString()} x {data.nights} nights X{" "}
                 {data.guests} guests
               </p>
               <p>₹{Number(totalAmount).toLocaleString()}</p>
             </div>
-            <div className="flex justify-between font-semibold text-md  text-stone-950  border-t pt-4">
+            <div className="flex justify-between font-semibold text-md  text-stone-950  border-t pt-4  mb-2">
               <p>Total (₹)</p>
               <p>₹{Number(totalAmount).toLocaleString()}</p>
             </div>
