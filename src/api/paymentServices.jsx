@@ -40,7 +40,6 @@ export const createRazorpayOrder = async (amount) => {
     );
   }
 };
-
 const handleRazorpayScreen = async (orderData) => {
   try {
     const res = await loadScript(
@@ -52,34 +51,74 @@ const handleRazorpayScreen = async (orderData) => {
       return;
     }
 
-    console.log("Razorpay checkout amount (paise):", Number(orderData.amount));
+    console.log("===== Razorpay Checkout Started =====");
+    console.log("Order ID:", orderData.id);
+    console.log("Amount (paise):", Number(orderData.amount));
+    console.log("Currency:", orderData.currency);
 
     return new Promise((resolve, reject) => {
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-        amount: Number(orderData.amount), // ✅ always number in paise
+        amount: Number(orderData.amount),
         currency: orderData.currency || "INR",
-        order_id: orderData.id, // required by Razorpay
+        order_id: orderData.id,
         name: "Aura Stay",
         description: "Payment Gateway",
         handler: function (response) {
+          console.log("===== Payment Handler Called =====");
+          console.log("Payment ID:", response.razorpay_payment_id);
+          console.log("Order ID:", response.razorpay_order_id);
+
+          // Fetch payment details from Razorpay server-side
           paymentFetch(response.razorpay_payment_id)
-            .then((status) => resolve(status))
-            .catch((error) => reject(error));
+            .then((status) => {
+              // Log Razorpay's card info
+              if (status.data && status.data.card) {
+                console.log("Card Info from Razorpay:", status.data.card);
+                console.log(
+                  "Card International Flag:",
+                  status.data.card.international
+                );
+                console.log("Card Type:", status.data.card.type);
+              }
+              resolve(status);
+            })
+            .catch((error) => {
+              console.error("Error fetching payment info:", error);
+              reject(error);
+            });
         },
-        theme: {
-          color: "#b17f44",
+        theme: { color: "#b17f44" },
+        prefill: {
+          name: "", // optional
+          email: "", // optional
+          contact: "", // optional
+        },
+        notes: {}, // optional
+        modal: {
+          escape: true,
+          ondismiss: () => console.log("Razorpay modal closed"),
         },
       };
 
+      console.log("Razorpay Options:", options);
+
       const paymentObject = new window.Razorpay(options);
+
+      paymentObject.on("payment.failed", function (response) {
+        console.error("Razorpay payment failed:", response.error);
+        console.log("Card Info (if available):", response.error.metadata);
+        toast.error(`Payment failed: ${response.error.description}`);
+      });
+
       paymentObject.open();
     });
   } catch (error) {
     toast.error("Error in payment!");
-    console.error(error);
+    console.error("Razorpay Checkout Error:", error);
   }
 };
+
 
 
 const loadScript = (src) => {

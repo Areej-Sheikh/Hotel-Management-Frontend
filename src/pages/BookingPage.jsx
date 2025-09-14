@@ -64,31 +64,30 @@ const BookingPage = () => {
       Number(data.price) * Number(data.nights) * Number(data.guests);
     setTotalAmount(total);
   }, [id, search]);
-console.log("Total Amount:", totalAmount);
+  console.log("Total Amount:", totalAmount);
 
-const handleConfirmOrder = async () => {
-  try {
-    const paymentResult = await createRazorpayOrder(totalAmount);
+  const handleConfirmOrder = async () => {
+    try {
+      const paymentResult = await createRazorpayOrder(totalAmount);
 
-    console.log("Payment Result:", paymentResult);
+      if (paymentResult?.error) {
+        toast.error(`Payment failed: ${paymentResult.error.description}`);
+        console.error("Payment failed:", paymentResult.error);
+        return; // stop execution
+      }
 
-    if (
-      paymentResult?.status === "captured" ||
-      paymentResult?.status === "authorized"
-    ) {
-      // Razorpay marks payments as "captured" (successful) or sometimes "authorized"
+      // Payment successful
       setStatus(paymentResult.status);
       setPaymentId(paymentResult.id || paymentResult.paymentId);
+
+      // Now create the booking
       await createBookings();
-    } else {
-      toast.error("Payment failed. Please try again.");
-      navigate("/");
+    } catch (error) {
+      toast.error("Something went wrong with payment.");
+      console.error("Payment error:", error);
     }
-  } catch (error) {
-    toast.error("Something went wrong with payment.");
-    console.error("Payment error:", error);
-  }
-};
+  };
+
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
