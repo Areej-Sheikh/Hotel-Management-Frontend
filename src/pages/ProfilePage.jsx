@@ -5,7 +5,10 @@ import {
   deletePropertyService,
   viewMyPropertyService,
 } from "./../api/propertyServices";
-import { viewUserBookingService } from "../api/bookingServices";
+import {
+  cancelBookingService,
+  viewUserBookingService,
+} from "../api/bookingServices";
 import { toast } from "react-toastify";
 import { calculateDuration } from "../utils/Math";
 
@@ -15,6 +18,8 @@ const ProfilePage = () => {
 
   const [bookingsData, setBookingsData] = useState([]);
   const [propertiesData, setPropertiesData] = useState([]);
+  const [cancellingBookingId, setCancellingBookingId] = useState(null);
+  console.log(cancellingBookingId);
 
   // Load properties
   const loadProperty = async () => {
@@ -31,8 +36,26 @@ const ProfilePage = () => {
     try {
       if (!user.user?._id) return;
       const res = await viewUserBookingService(user.user._id);
-      console.log("Bookings fetched from API:", res);
-      setBookingsData(res || []);
+
+      // Sort bookings:
+      const sorted = res.sort((a, b) => {
+        // Cancelled bookings always last
+        if (
+          a.status.toLowerCase() === "cancelled" &&
+          b.status.toLowerCase() !== "cancelled"
+        )
+          return 1;
+        if (
+          b.status.toLowerCase() === "cancelled" &&
+          a.status.toLowerCase() !== "cancelled"
+        )
+          return -1;
+        // Sort by createdAt descending (latest first)
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+
+      console.log("Bookings fetched and sorted:", sorted);
+      setBookingsData(sorted || []);
     } catch (err) {
       console.error("Error fetching bookings:", err);
     }
@@ -66,9 +89,22 @@ const ProfilePage = () => {
     }
   };
 
-  const bookingCancelHandler = (id) => {
-    console.log(`Cancelled booking with ID: ${id}`);
-    // Optional: call API to cancel booking
+  const bookingCancelHandler = async (id) => {
+    const confirmCancel = window.confirm(
+      "Are you sure you want to cancel this booking?"
+    );
+    if (!confirmCancel) return;
+
+    try {
+      setCancellingBookingId(id);
+      await cancelBookingService(id);
+      toast.success("Booking cancelled successfully!");
+      loadBookings(); // reload bookings
+    } catch (err) {
+      console.error("Booking cancellation failed:", err.message);
+    } finally {
+      setCancellingBookingId(null);
+    }
   };
 
   return (
@@ -170,88 +206,106 @@ const ProfilePage = () => {
           <h1 className="text-3xl font-bold my-4 mt-10">My Bookings</h1>
           <div className="grid grid-cols-3 gap-x-3">
             {bookingsData.length > 0 ? (
-              bookingsData.map((booking) => (
-                <div
-                  key={booking._id}
-                  className="py-5 px-8 mb-2 rounded-xl shadow"
-                >
-                  <div className="flex items-center justify-between">
-                    <h1 className="text-md font-bold">Place</h1>
-                    <h1 className="text-sm font-light">
-                      {booking.property?.title || "N/A"}
-                    </h1>
-                  </div>
+              bookingsData.map((booking) => {
+                const isCancelled =
+                  booking.status?.toLowerCase() === "cancelled";
 
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-md font-bold">Price</h3>
-                    <h3 className="text-sm font-light">
-                      ₹{booking.totalPrice}
-                    </h3>
-                  </div>
+                return (
+                  <div
+                    key={booking._id}
+                    className={`py-5 px-8 mb-2 rounded-xl shadow transition-all duration-300 ${
+                      isCancelled
+                        ? "bg-red-50 border border-red-300"
+                        : "bg-white"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <h1 className="text-md font-bold">Place</h1>
+                      <h1 className="text-sm font-light">
+                        {booking.property?.title || "N/A"}
+                      </h1>
+                    </div>
 
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-md font-bold">Status</h3>
-                    <h3
-                      className={`text-sm font-bold ${
-                        booking.status?.toLowerCase() === "confirmed"
-                          ? "text-green-600"
-                          : booking.status?.toLowerCase() === "pending"
-                          ? "text-orange-600"
-                          : "text-red-600"
-                      }`}
-                    >
-                      {booking.status || "N/A"}
-                    </h3>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-md font-bold">Order ID</h3>
-                    <h3 className="text-sm font-light">
-                      {booking.razorpayOrderId}
-                    </h3>
-                  </div>
-
-                  <div className="flex justify-between mt-4">
-                    <div className="flex flex-col">
-                      <h3 className="text-md font-bold">Check In</h3>
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-md font-bold">Price</h3>
                       <h3 className="text-sm font-light">
-                        {new Date(booking.checkInDate).toLocaleDateString(
-                          "en-GB",
-                          {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          }
-                        )}
+                        ₹{booking.totalPrice}
                       </h3>
                     </div>
 
-                    <div className="flex flex-col items-end">
-                      <h3 className="text-md font-bold">Check Out</h3>
-                      <h3 className="text-sm font-light">
-                        {new Date(booking.checkOutDate).toLocaleDateString(
-                          "en-GB",
-                          {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          }
-                        )}
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-md font-bold">Status</h3>
+                      <h3
+                        className={`text-sm font-bold ${
+                          isCancelled
+                            ? "text-red-600"
+                            : booking.status?.toLowerCase() === "confirmed"
+                            ? "text-green-600"
+                            : "text-orange-600"
+                        }`}
+                      >
+                        {booking.status || "N/A"}
                       </h3>
                     </div>
-                  </div>
 
-                  {booking.status?.toLowerCase() !== "cancelled" && (
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-md font-bold">Order ID</h3>
+                      <h3 className="text-sm font-light">
+                        {booking.razorpayOrderId}
+                      </h3>
+                    </div>
+
+                    <div className="flex justify-between mt-4">
+                      <div className="flex flex-col">
+                        <h3 className="text-md font-bold">Check In</h3>
+                        <h3 className="text-sm font-light">
+                          {new Date(booking.checkInDate).toLocaleDateString(
+                            "en-GB",
+                            {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            }
+                          )}
+                        </h3>
+                      </div>
+
+                      <div className="flex flex-col items-end">
+                        <h3 className="text-md font-bold">Check Out</h3>
+                        <h3 className="text-sm font-light">
+                          {new Date(booking.checkOutDate).toLocaleDateString(
+                            "en-GB",
+                            {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            }
+                          )}
+                        </h3>
+                      </div>
+                    </div>
+
                     <button
                       onClick={() => bookingCancelHandler(booking._id)}
-                      className="cursor-pointer text-center border-[#b17f44] text-[#b17f44] border rounded-md mt-3 py-2 w-full"
+                      className={`cursor-pointer text-center border rounded-md mt-3 py-2 w-full ${
+                        isCancelled
+                          ? "bg-gray-300 text-gray-600 border-gray-300 cursor-not-allowed"
+                          : "border-[#b17f44] text-[#b17f44] bg-white hover:bg-[#b17f44] hover:text-white transition"
+                      }`}
                       type="button"
+                      disabled={
+                        isCancelled || cancellingBookingId === booking._id
+                      }
                     >
-                      Cancel Booking
+                      {cancellingBookingId === booking._id
+                        ? "Cancelling..."
+                        : isCancelled
+                        ? "Cancelled"
+                        : "Cancel Booking"}
                     </button>
-                  )}
-                </div>
-              ))
+                  </div>
+                );
+              })
             ) : (
               <p>No bookings found.</p>
             )}

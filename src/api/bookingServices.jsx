@@ -25,7 +25,10 @@ export const cancelBookingService = async (bookingId) => {
     const { data } = await axios.delete(`/bookings/${bookingId}`);
     return data;
   } catch (error) {
-    toast.error(error.response.data.message);
+    const message =
+      error.response?.data?.message || "Failed to cancel booking.";
+    toast.error(message);
+    throw new Error(message); // <-- throw so the caller can handle it
   }
 };
 
