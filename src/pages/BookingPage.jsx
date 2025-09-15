@@ -58,54 +58,59 @@ const BookingPage = () => {
     }
   }, []);
 
-  useEffect(() => {
-    getProperty(id);
-    const total =
-      Number(data.price) * Number(data.nights) * Number(data.guests);
-    setTotalAmount(total);
-  }, [id, getProperty, data]);
+ useEffect(() => {
+   getProperty(id);
+   const total = Number(data.price) * Number(data.nights) * Number(data.guests);
+   setTotalAmount(total);
+ }, [id, search]);
 
-  console.log("Total Amount:", totalAmount);
+ console.log("Total Amount:", totalAmount);
 
-  const handleConfirmOrder = async () => {
-    try {
-      // 1️⃣ Create Razorpay Order
-      const paymentResult = await createRazorpayOrder(totalAmount);
+ const handleConfirmOrder = async () => {
+   try {
+     // 1️⃣ Create Razorpay Order
+     const paymentResult = await createRazorpayOrder(totalAmount);
 
-      if (paymentResult?.error) {
-        toast.error(`Payment failed: ${paymentResult.error.description}`);
-        console.error("Payment failed:", paymentResult.error);
-        return; // stop execution if payment failed
-      }
+     if (paymentResult?.error) {
+       toast.error(`Payment failed: ${paymentResult.error.description}`);
+       console.error("Payment failed:", paymentResult.error);
+       return; // stop execution if payment failed
+     }
 
-      // 2️⃣ Payment successful
-      const paymentId =
-        paymentResult.id || paymentResult.paymentId || "test_payment_id";
-      setPaymentId(paymentId);
-      setStatus(paymentResult.status || "paid");
+     // 2️⃣ Extract Razorpay Order ID and Payment ID
+     const razorpayOrderId = paymentResult.data?.order_id || "test_order_id";
+     const paymentId = paymentResult.data?.id || "test_payment_id";
 
-      // 3️⃣ Create booking payload
-      const bookingData = {
-        propertyId: id,
-        status: "Confirmed",
-        checkInDate: data.checkinDate,
-        checkOutDate: data.checkoutDate,
-        totalAmount,
-        paymentId, // send actual payment id
-      };
+     console.log("Razorpay Order ID:", razorpayOrderId);
+     console.log("Razorpay Payment ID:", paymentId);
 
-      console.log("Booking Data to be sent:", bookingData);
+     setPaymentId(paymentId);
+     setStatus(paymentResult.data?.status || "paid");
 
-      // 4️⃣ Call backend to create booking
-      await createBookingService(bookingData);
+     // 3️⃣ Create booking payload
+     const bookingData = {
+       propertyId: id,
+       status: "Confirmed",
+       checkInDate: data.checkinDate,
+       checkOutDate: data.checkoutDate,
+       totalAmount,
+       paymentId, // actual payment id
+       razorpayOrderId, // razorpay order id
+     };
 
-      toast.success("Booking Confirmed Successfully");
-      navigate("/profile");
-    } catch (error) {
-      toast.error("Something went wrong with payment or booking.");
-      console.error("Booking/Payment error:", error);
-    }
-  };
+     console.log("Booking Data to be sent:", bookingData);
+
+     // 4️⃣ Call backend to create booking
+     await createBookingService(bookingData);
+
+     toast.success("Booking Confirmed Successfully");
+     navigate("/profile");
+   } catch (error) {
+     toast.error("Something went wrong with payment or booking.");
+     console.error("Booking/Payment error:", error);
+   }
+ };
+
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
