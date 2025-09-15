@@ -51,9 +51,7 @@ const Cards = () => {
       </div>
 
       <div className="explore-more w-full text-center my-12 space-y-2 ">
-        <h2 className="font-bold text-lg text-zinc-900">
-          Continue exploring farms
-        </h2>
+        <h2 className="font-bold text-lg text-zinc-900">Continue Exploring</h2>
         <button className="bg-[#111] text-[#fff] py-3 px-5 font-bold rounded-lg">
           Show more
         </button>

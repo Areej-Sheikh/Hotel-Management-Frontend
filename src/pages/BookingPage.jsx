@@ -30,11 +30,10 @@ const BookingPage = () => {
     const bookingData = {
       propertyId: id,
       status: "Confirmed",
-      checkinDate,
-      checkoutDate,
+      checkInDate: checkinDate,
+      checkOutDate: checkoutDate,
       totalAmount,
     };
-
     console.log("Booking Data to be sent:", bookingData);
 
     try {
@@ -45,6 +44,7 @@ const BookingPage = () => {
       toast.error("Failed to create booking. Please try again.");
       console.error(error);
     }
+    console.log("booking created successfully", createBookings);
   }, [id, checkinDate, checkoutDate, totalAmount, navigate]);
 
   const getProperty = useCallback(async (id) => {
@@ -63,53 +63,71 @@ const BookingPage = () => {
     const total =
       Number(data.price) * Number(data.nights) * Number(data.guests);
     setTotalAmount(total);
-  }, [id, search]);
+  }, [id, getProperty, data]);
+
   console.log("Total Amount:", totalAmount);
 
   const handleConfirmOrder = async () => {
     try {
+      // 1️⃣ Create Razorpay Order
       const paymentResult = await createRazorpayOrder(totalAmount);
 
       if (paymentResult?.error) {
         toast.error(`Payment failed: ${paymentResult.error.description}`);
         console.error("Payment failed:", paymentResult.error);
-        return; // stop execution
+        return; // stop execution if payment failed
       }
 
-      // Payment successful
-      setStatus(paymentResult.status);
-      setPaymentId(paymentResult.id || paymentResult.paymentId);
+      // 2️⃣ Payment successful
+      const paymentId =
+        paymentResult.id || paymentResult.paymentId || "test_payment_id";
+      setPaymentId(paymentId);
+      setStatus(paymentResult.status || "paid");
 
-      // Now create the booking
-      await createBookings();
+      // 3️⃣ Create booking payload
+      const bookingData = {
+        propertyId: id,
+        status: "Confirmed",
+        checkInDate: data.checkinDate,
+        checkOutDate: data.checkoutDate,
+        totalAmount,
+        paymentId, // send actual payment id
+      };
+
+      console.log("Booking Data to be sent:", bookingData);
+
+      // 4️⃣ Call backend to create booking
+      await createBookingService(bookingData);
+
+      toast.success("Booking Confirmed Successfully");
+      navigate("/profile");
     } catch (error) {
-      toast.error("Something went wrong with payment.");
-      console.error("Payment error:", error);
+      toast.error("Something went wrong with payment or booking.");
+      console.error("Booking/Payment error:", error);
     }
   };
 
+const formatDate = (dateStr) => {
+  const date = new Date(dateStr);
+  return `${date.getDate()} ${date.toLocaleString("default", {
+    month: "short",
+  })} ${date.getFullYear()}`;
+};
+useEffect(() => {
+  if (paymentId) {
+    console.log("Payment ID from useEffect:", paymentId);
+  }
+}, [paymentId]);
 
-  const formatDate = (dateStr) => {
-    const date = new Date(dateStr);
-    return `${date.getDate()} ${date.toLocaleString("default", {
-      month: "short",
-    })} ${date.getFullYear()}`;
-  };
-  useEffect(() => {
-    if (paymentId) {
-      console.log("Payment ID:", paymentId);
-    }
-  }, [paymentId]);
-
-  useEffect(() => {
-    if (status) {
-      console.log("Payment Status:", status);
-    }
-  }, [status]);
+useEffect(() => {
+  if (status) {
+    console.log("Payment Status from useEffect:", status);
+  }
+}, [status]);
 
   useEffect(() => {
     if (property) {
-      console.log("Property data:", property);
+      console.log("Property data from useEffect:", property);
     }
   }, [property]);
 

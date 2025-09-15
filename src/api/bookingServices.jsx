@@ -4,6 +4,7 @@ import axios from "./axiosConfig.jsx";
 export const createBookingService = async (bookingData) => {
   try {
     const { data } = await axios.post("/bookings", bookingData);
+    console.log("Booking created successfully:", data);
     return data;
   } catch (error) {
     toast.error(error.response.data.message);
