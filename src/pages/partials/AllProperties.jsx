@@ -75,7 +75,7 @@ const AllProperties = () => {
         {properties.length === 0 ? (
           <p>No properties found.</p>
         ) : (
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left border-collapse ">
             <thead>
               <tr className="text-xl border-b">
                 <th className="py-2">Title</th>
@@ -87,7 +87,10 @@ const AllProperties = () => {
             </thead>
             <tbody>
               {properties.map((property) => (
-                <tr key={property._id} className="border-t">
+                <tr
+                  key={property._id}
+                  className="border-t border-b hover:bg-gray-100"
+                >
                   <td className="py-2">{property.title}</td>
                   <td className="py-2">₹{property.price}</td>
                   <td className="py-2">

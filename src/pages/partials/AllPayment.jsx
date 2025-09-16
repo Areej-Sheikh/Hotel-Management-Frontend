@@ -1,32 +1,26 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import {
-  viewAllPaymentsService,
-  deletePaymentService,
-} from "../../api/paymentServices";
+import { viewAllPaymentsService } from "../../api/adminServices";
 
 const AllPayment = () => {
   const [payments, setPayments] = useState([]);
-  const [deletingPaymentId, setDeletingPaymentId] = useState(null);
 
   // Fetch all payments
   const loadPayments = async () => {
     try {
       const data = await viewAllPaymentsService();
-      // Optional: sort by status (Cancelled last) and createdAt descending
-      const sorted = data.sort((a, b) => {
-        if (
-          a.status.toLowerCase() === "cancelled" &&
-          b.status.toLowerCase() !== "cancelled"
-        )
-          return 1;
-        if (
-          b.status.toLowerCase() === "cancelled" &&
-          a.status.toLowerCase() !== "cancelled"
-        )
-          return -1;
+      const paymentsArray = data || [];
+
+      const sorted = paymentsArray.sort((a, b) => {
+        const statusA = a.status?.toLowerCase();
+        const statusB = b.status?.toLowerCase();
+
+        if (statusA === "cancelled" && statusB !== "cancelled") return 1;
+        if (statusB === "cancelled" && statusA !== "cancelled") return -1;
+
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
+
       setPayments(sorted);
     } catch (err) {
       console.error("Error fetching payments:", err);
@@ -38,24 +32,6 @@ const AllPayment = () => {
     loadPayments();
   }, []);
 
-  // Delete payment handler
-  const deletePaymentHandler = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this payment?"
-    );
-    if (!confirmDelete) return;
-
-    try {
-      setDeletingPaymentId(id);
-      await deletePaymentService(id);
-      loadPayments(); // reload payments after deletion
-    } catch (err) {
-      console.error("Failed to delete payment:", err);
-    } finally {
-      setDeletingPaymentId(null);
-    }
-  };
-
   return (
     <main className="flex-1 px-6">
       <section className="bg-white p-6 rounded-lg shadow-md min-h-[80vh]">
@@ -63,14 +39,22 @@ const AllPayment = () => {
         <div className="grid grid-cols-3 gap-6">
           {payments.length > 0 ? (
             payments.map((payment) => {
-              const isCancelled = payment.status?.toLowerCase() === "cancelled";
+              const status = payment.status?.toLowerCase();
+              const isCancelled = status === "cancelled";
+              const isConfirmed = status === "confirmed";
 
               return (
                 <div
                   key={payment._id}
-                  className={`py-5 px-6 mb-4 rounded-xl shadow transition-all duration-300 ${
-                    isCancelled ? "bg-red-50 border border-red-300" : "bg-white"
-                  }`}
+                  className={`py-5 px-6 mb-4 rounded-xl shadow transition-all duration-300
+                    ${
+                      isCancelled
+                        ? "bg-red-50 border border-red-300 hover:bg-red-100 hover:shadow-red-200"
+                        : isConfirmed
+                        ? "bg-white border border-green-200 hover:bg-green-50 hover:shadow-green-200"
+                        : "bg-white border border-gray-200 hover:shadow-gray-300"
+                    }
+                  `}
                 >
                   <div className="flex justify-between mb-1">
                     <span className="font-bold text-md">Property</span>
@@ -104,9 +88,9 @@ const AllPayment = () => {
                     <span className="font-bold text-md">Payment Status</span>
                     <span
                       className={`text-sm font-bold ${
-                        payment.status.toLowerCase() === "confirmed"
+                        isConfirmed
                           ? "text-green-600"
-                          : payment.status.toLowerCase() === "pending"
+                          : status === "pending"
                           ? "text-orange-600"
                           : "text-red-600"
                       }`}
@@ -114,20 +98,6 @@ const AllPayment = () => {
                       {payment.status}
                     </span>
                   </div>
-
-                  <button
-                    onClick={() => deletePaymentHandler(payment._id)}
-                    className={`w-full py-2 mt-2 rounded-md border text-center ${
-                      isCancelled
-                        ? "bg-gray-300 text-gray-600 border-gray-300 cursor-not-allowed"
-                        : "border-[#b17f44] text-[#b17f44] bg-white hover:bg-[#b17f44] hover:text-white transition"
-                    }`}
-                    disabled={isCancelled || deletingPaymentId === payment._id}
-                  >
-                    {deletingPaymentId === payment._id
-                      ? "Deleting..."
-                      : "Delete Payment"}
-                  </button>
                 </div>
               );
             })

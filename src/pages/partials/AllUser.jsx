@@ -81,7 +81,10 @@ const AllUser = () => {
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user._id} className="border-t">
+                <tr
+                  key={user._id}
+                  className="border-t border-b hover:bg-gray-100"
+                >
                   <td className="py-2">{user.username}</td>
                   <td className="py-2">{user.email}</td>
                   <td className="py-2">

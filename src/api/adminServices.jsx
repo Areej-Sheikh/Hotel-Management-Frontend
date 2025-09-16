@@ -63,3 +63,27 @@ export const getSinglePaymentService = async (id) => {
     toast.error(error.response.data.message);
   }
 };
+
+export const deleteBookingService = async (id) => {
+  try {
+    const { data } = await axios.delete(`/admin/bookings/${id}`);
+    return data;
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Failed to delete booking.");
+    throw error;
+  }
+};
+
+export const viewAllPaymentsService = async () => {
+  try {
+    const { data } = await axios.get("/admin/payments"); // must match back-end route
+    return data.data; // array of payments
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message ||
+        error.message ||
+        "Failed to fetch payments"
+    );
+    throw error;
+  }
+};

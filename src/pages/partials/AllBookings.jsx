@@ -1,41 +1,33 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import axios from "../../api/axiosConfig.jsx";
-import { getAllBookingsService } from "../../api/bookingServices";
+import {
+  getBookingService,
+  deleteBookingService,
+} from "../../api/adminServices";
+
 const AllBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [deletingBookingId, setDeletingBookingId] = useState(null);
+  const [sortStatus, setSortStatus] = useState("All");
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const data = await getAllBookingsService();
+        console.log("Fetching all bookings...");
+        const data = await getBookingService();
+        console.log("Bookings fetched:", data);
 
-        // For each booking, populate user + property details
-        const populatedBookings = await Promise.all(
-          data.map(async (booking) => {
-            try {
-              const [userRes, propertyRes] = await Promise.all([
-                axios.get(`/users/${booking.user}`), // get user by ID
-                axios.get(`/properties/${booking.property}`), // get property by ID
-              ]);
-
-              return {
-                ...booking,
-                user: userRes.data.username, // replace ID with username
-                property: propertyRes.data.name, // replace ID with property name
-              };
-            } catch (err) {
-              console.error("Error populating booking:", err);
-              return booking; // fallback to IDs
-            }
-          })
-        );
-
-        setBookings(populatedBookings);
+        if (data && data.length > 0) {
+          setBookings(data);
+          toast.success("Bookings loaded successfully!");
+        } else {
+          toast.info("No bookings found.");
+        }
       } catch (error) {
-        toast.error("Failed to fetch bookings");
-        console.log(error.message);
+        const message = error.response?.data?.message || error.message;
+        toast.error(`Failed to fetch bookings: ${message}`);
+        console.error("Fetch bookings error:", error);
       } finally {
         setLoading(false);
       }
@@ -43,6 +35,36 @@ const AllBookings = () => {
 
     fetchBookings();
   }, []);
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this booking?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      setDeletingBookingId(id);
+      console.log(`Deleting booking with ID: ${id}...`);
+      await deleteBookingService(id);
+
+      toast.success("Booking deleted successfully!");
+      setBookings((prev) => prev.filter((b) => b._id !== id));
+    } catch (error) {
+      const message = error.response?.data?.message || error.message;
+      toast.error(`Failed to delete booking: ${message}`);
+      console.error("Delete booking error:", error);
+    } finally {
+      setDeletingBookingId(null);
+    }
+  };
+
+  // 🔍 Filter + sort bookings
+  const filteredBookings =
+    sortStatus === "All"
+      ? bookings
+      : bookings.filter(
+          (b) => b.status.toLowerCase() === sortStatus.toLowerCase()
+        );
 
   if (loading) {
     return (
@@ -56,88 +78,96 @@ const AllBookings = () => {
 
   return (
     <main className="flex-1 px-6">
-      <section className="bg-white p-6 rounded-lg shadow-md min-h-[80vh]">
-        <h2 className="text-xl font-bold mb-4">Bookings</h2>
-        {bookings.length === 0 ? (
+      <section className="bg-white p-6 rounded-lg shadow-md">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold">All Bookings</h2>
+
+          {/* 🔥 Sort by Status Dropdown */}
+          <div className="relative w-40">
+            <button
+              onClick={() => setOpen(!open)}
+              className="border px-3 py-1 rounded-md w-full text-left"
+            >
+              {sortStatus}
+            </button>
+            {open && (
+              <ul className="absolute w-full bg-white border rounded-md mt-1 shadow-lg z-10">
+                {["All", "Pending", "Confirmed", "Cancelled"].map((status) => (
+                  <li
+                    key={status}
+                    onClick={() => {
+                      setSortStatus(status);
+                      setOpen(false);
+                    }}
+                    className="px-4 py-2 hover:bg-blue-100 hover:text-blue-600 cursor-pointer transition-colors rounded-md"
+                  >
+                    {status}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+
+        {filteredBookings.length === 0 ? (
           <p>No bookings found.</p>
         ) : (
-          <div className="grid grid-cols-3 gap-x-3">
-            {bookings.map((booking) => (
-              <div
-                key={booking._id}
-                className="py-5 px-8 mb-2 rounded-xl shadow-[0px_0px_30px_2px_#e4e4e7]"
-              >
-                <div className="flex items-center w-full justify-between">
-                  <h1 className="text-md font-bold">Place </h1>
-                  <h1 className="text-sm font-light">{booking.property}</h1>
-                </div>
-
-                <div className="flex items-center w-full justify-between">
-                  <h1 className="text-md font-bold">Booked by </h1>
-                  <h1 className="text-sm font-light">{booking.user}</h1>
-                </div>
-
-                <div className="flex items-center w-full justify-between">
-                  <h3 className="text-md font-bold">Price </h3>
-                  <h3 className="text-sm font-light">₹{booking.totalPrice}</h3>
-                </div>
-
-                <div className="flex items-center w-full justify-between">
-                  <h3 className="text-md font-bold">Status </h3>
-                  <h3
-                    className={`text-sm ${
-                      booking.status.toLowerCase() === "confirmed" &&
-                      "text-green-600"
-                    } ${
-                      booking.status.toLowerCase() === "pending" &&
-                      "text-orange-600"
-                    } ${
-                      booking.status.toLowerCase() === "cancelled" &&
-                      "text-red-600"
-                    } font-bold`}
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="text-xl border-b">
+                <th className="py-2">Property</th>
+                <th className="py-2">Booked By</th>
+                <th className="py-2">Check-in</th>
+                <th className="py-2">Check-out</th>
+                <th className="py-2">Status</th>
+                <th className="py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredBookings.map((booking) => (
+                <tr key={booking._id} className="border-b hover:bg-gray-100">
+                  <td className="py-2">
+                    {booking.property?.title || "Unknown"}
+                  </td>
+                  <td className="py-2">
+                    {booking.user?.username || "Unknown"}
+                  </td>
+                  <td className="py-2">
+                    {new Date(booking.checkInDate).toLocaleDateString()}
+                  </td>
+                  <td className="py-2">
+                    {new Date(booking.checkOutDate).toLocaleDateString()}
+                  </td>
+                  <td
+                    className={`py-2 font-bold ${
+                      booking.status.toLowerCase() === "confirmed"
+                        ? "text-green-600"
+                        : booking.status.toLowerCase() === "pending"
+                        ? "text-orange-600"
+                        : "text-red-600"
+                    }`}
                   >
                     {booking.status}
-                  </h3>
-                </div>
-
-                <div className="flex items-center w-full justify-between">
-                  <h3 className="text-md font-bold">Order ID </h3>
-                  <h3 className="text-sm font-light">
-                    {booking.razorpayOrderId}
-                  </h3>
-                </div>
-
-                <div className="flex justify-between items-center mt-4">
-                  <div className="flex flex-col w-full justify-between">
-                    <h3 className="text-md font-bold">Check In </h3>
-                    <h3 className="text-sm font-light">
-                      {new Date(booking.checkInDate).toLocaleDateString(
-                        "en-GB",
-                        {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        }
-                      )}
-                    </h3>
-                  </div>
-                  <div className="flex items-end flex-col w-full justify-between">
-                    <h3 className="text-md font-bold">Check Out </h3>
-                    <h3 className="text-sm font-light">
-                      {new Date(booking.checkOutDate).toLocaleDateString(
-                        "en-GB",
-                        {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        }
-                      )}
-                    </h3>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                  </td>
+                  <td className="py-2">
+                    <button
+                      className={`bg-red-500 text-white rounded-md px-3 py-1 text-sm ${
+                        deletingBookingId === booking._id
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      }`}
+                      onClick={() => handleDelete(booking._id)}
+                      disabled={deletingBookingId === booking._id}
+                    >
+                      {deletingBookingId === booking._id
+                        ? "Deleting..."
+                        : "Delete"}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
       </section>
     </main>
