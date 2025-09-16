@@ -168,19 +168,19 @@ const ProfilePage = () => {
                       ))}
                     </div>
                     <div className="p-4">
-                      <h2 className="font-semibold text-lg">
+                      <h2 className="font-semibold text-lg whitespace-nowrap overflow-hidden truncate">
                         {property.title}
                       </h2>
                       <p className="text-black font-bold">
                         ₹{property.price} / night
                       </p>
-                      <p className="text-gray-500 text-sm">
+                      <p className="text-gray-500 text-sm whitespace-nowrap overflow-hidden truncate">
                         {property.location}
                       </p>
                     </div>
                   </Link>
 
-                  <div className="flex gap-2 px-4">
+                  <div className="flex gap-2 px-4 mb-2">
                     <Link
                       to={`/property/edit/${property._id}`}
                       className="cursor-pointer text-center border border-[#b17f44] text-[#b17f44] rounded-md py-2 w-full"
@@ -249,8 +249,8 @@ const ProfilePage = () => {
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <h3 className="text-md font-bold">Order ID</h3>
-                      <h3 className="text-sm font-light">
+                      <h3 className="text-md font-bold flex-row">Order ID</h3>
+                      <h3 className="text-sm font-light whitespace-nowrap overflow-hidden truncate">
                         {booking.razorpayOrderId}
                       </h3>
                     </div>

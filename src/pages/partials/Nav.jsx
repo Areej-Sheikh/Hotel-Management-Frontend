@@ -20,7 +20,6 @@ const Nav = () => {
   const logoutHandler = async () => {
     await dispatch(asynclogout());
     toast.success("Logged out successfully");
-    toast.info("Redirecting to home page");
   };
   const toggleMenu = () => setIsMenuVisible(!isMenuVisible);
 
