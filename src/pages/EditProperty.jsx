@@ -19,12 +19,11 @@ const EditProperty = () => {
     reset,
   } = useForm();
 
-  // Fetch property by ID and prefill form
   useEffect(() => {
     const fetchProperty = async () => {
       try {
         const res = await viewPropertyService(id);
-        const propertyData = res.property; // <-- unwrap here
+        const propertyData = res.property;
         console.log("🏠 Fetched property:", propertyData);
         if (!propertyData) throw new Error("Property not found");
 
@@ -48,7 +47,6 @@ const EditProperty = () => {
 
   const onSubmit = async (data) => {
     try {
-      // Convert comma-separated strings to arrays
       const processedData = {
         _id: id,
         ...data,
@@ -66,7 +64,7 @@ const EditProperty = () => {
       console.log("💾 Property updated:", updatedProperty);
 
       toast.success("Property updated successfully!");
-      navigate("/profile"); // redirect back to profile page
+      navigate("/profile"); 
     } catch (err) {
       console.error(err);
       toast.error("Failed to update property.");

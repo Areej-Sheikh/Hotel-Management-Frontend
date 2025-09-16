@@ -2,12 +2,10 @@ import { useSelector } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
 
 const AdminPanel = () => {
-  // Get current user info from Redux store
   const { user, isLoggedIn } = useSelector((store) => store.user);
 
   console.log("AdminPanel user:", user);
 
-  // Sample dynamic navigation items
   const navItems = [
     { label: "Users", path: "/admin-panel/users" },
     { label: "Properties", path: "/admin-panel/properties" },

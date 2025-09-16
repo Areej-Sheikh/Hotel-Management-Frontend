@@ -20,7 +20,7 @@ const ProfilePage = () => {
   const [propertiesData, setPropertiesData] = useState([]);
   const [cancellingBookingId, setCancellingBookingId] = useState(null);
 
-  // Load properties
+  
   const loadProperty = async () => {
     try {
       const data = await viewMyPropertyService();
@@ -36,9 +36,7 @@ const ProfilePage = () => {
       if (!user.user?._id) return;
       const res = await viewUserBookingService(user.user._id);
 
-      // Sort bookings:
       const sorted = res.sort((a, b) => {
-        // Cancelled bookings always last
         if (
           a.status.toLowerCase() === "cancelled" &&
           b.status.toLowerCase() !== "cancelled"
@@ -49,7 +47,6 @@ const ProfilePage = () => {
           a.status.toLowerCase() !== "cancelled"
         )
           return -1;
-        // Sort by createdAt descending (latest first)
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
 
@@ -68,7 +65,6 @@ const ProfilePage = () => {
     }
   }, [user]);
 
-  // Debugging logs
   useEffect(() => {
     console.log("Properties data updated:", propertiesData);
   }, [propertiesData]);
@@ -81,7 +77,7 @@ const ProfilePage = () => {
     try {
       await deletePropertyService(id);
       toast.success("Property deleted successfully!");
-      loadProperty(); // Refresh properties
+      loadProperty();
     } catch (error) {
       console.error("Error deleting property:", error);
       toast.error("Failed to delete property.");
@@ -99,7 +95,7 @@ const ProfilePage = () => {
       await cancelBookingService(id);
       console.log("Booking Id cancelled:", id);
       toast.success("Booking cancelled successfully!");
-      loadBookings(); // reload bookings
+      loadBookings(); 
     } catch (err) {
       console.error("Booking cancellation failed:", err.message);
     } finally {

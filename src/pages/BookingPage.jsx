@@ -68,16 +68,14 @@ const BookingPage = () => {
 
  const handleConfirmOrder = async () => {
    try {
-     // 1️⃣ Create Razorpay Order
      const paymentResult = await createRazorpayOrder(totalAmount);
 
      if (paymentResult?.error) {
        toast.error(`Payment failed: ${paymentResult.error.description}`);
        console.error("Payment failed:", paymentResult.error);
-       return; // stop execution if payment failed
+       return; 
      }
 
-     // 2️⃣ Extract Razorpay Order ID and Payment ID
      const razorpayOrderId = paymentResult.data?.order_id || "test_order_id";
      const paymentId = paymentResult.data?.id || "test_payment_id";
 
@@ -87,20 +85,18 @@ const BookingPage = () => {
      setPaymentId(paymentId);
      setStatus(paymentResult.data?.status || "paid");
 
-     // 3️⃣ Create booking payload
      const bookingData = {
        propertyId: id,
        status: "Confirmed",
        checkInDate: data.checkinDate,
        checkOutDate: data.checkoutDate,
        totalAmount,
-       paymentId, // actual payment id
-       razorpayOrderId, // razorpay order id
+       paymentId, 
+       razorpayOrderId,
      };
 
      console.log("Booking Data to be sent:", bookingData);
 
-     // 4️⃣ Call backend to create booking
      await createBookingService(bookingData);
 
      toast.success("Booking Confirmed Successfully");

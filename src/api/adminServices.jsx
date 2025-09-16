@@ -76,8 +76,8 @@ export const deleteBookingService = async (id) => {
 
 export const viewAllPaymentsService = async () => {
   try {
-    const { data } = await axios.get("/admin/payments"); // must match back-end route
-    return data.data; // array of payments
+    const { data } = await axios.get("/admin/payments");
+    return data;
   } catch (error) {
     toast.error(
       error.response?.data?.message ||

@@ -28,7 +28,7 @@ export const cancelBookingService = async (bookingId) => {
     const message =
       error.response?.data?.message || "Failed to cancel booking.";
     toast.error(message);
-    throw new Error(message); // <-- throw so the caller can handle it
+    throw new Error(message); 
   }
 };
 

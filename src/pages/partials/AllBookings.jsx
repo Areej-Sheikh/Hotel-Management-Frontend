@@ -58,7 +58,6 @@ const AllBookings = () => {
     }
   };
 
-  // 🔍 Filter + sort bookings
   const filteredBookings =
     sortStatus === "All"
       ? bookings

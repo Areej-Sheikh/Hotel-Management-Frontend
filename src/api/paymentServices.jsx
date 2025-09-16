@@ -31,7 +31,6 @@ export const createRazorpayOrder = async (amount) => {
 
     if (response.status === 200) {
       console.log("Order created successfully!");
-      // pass the inner 'data' object
       return handleRazorpayScreen(response.data.data);
     }
   } catch (error) {
@@ -69,10 +68,8 @@ const handleRazorpayScreen = async (orderData) => {
           console.log("Payment ID:", response.razorpay_payment_id);
           console.log("Order ID:", response.razorpay_order_id);
 
-          // Fetch payment details from Razorpay server-side
           paymentFetch(response.razorpay_payment_id)
             .then((status) => {
-              // Log Razorpay's card info
               if (status.data && status.data.card) {
                 console.log("Card Info from Razorpay:", status.data.card);
                 console.log(
@@ -90,11 +87,11 @@ const handleRazorpayScreen = async (orderData) => {
         },
         theme: { color: "#b17f44" },
         prefill: {
-          name: "", // optional
-          email: "", // optional
-          contact: "", // optional
+          name: "",
+          email: "",
+          contact: "",
         },
-        notes: {}, // optional
+        notes: {},
         modal: {
           escape: true,
           ondismiss: () => console.log("Razorpay modal closed"),

@@ -7,7 +7,6 @@ const AllUser = () => {
   const [loading, setLoading] = useState(true);
   const [deletingUserId, setDeletingUserId] = useState(null);
 
-  // Fetch all non-admin users
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -27,7 +26,6 @@ const AllUser = () => {
     fetchUsers();
   }, []);
 
-  // Delete user
   const handleRemove = async (userId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to remove this user?"

@@ -5,20 +5,21 @@ import { viewAllPaymentsService } from "../../api/adminServices";
 const AllPayment = () => {
   const [payments, setPayments] = useState([]);
 
-  // Fetch all payments
   const loadPayments = async () => {
     try {
-      const data = await viewAllPaymentsService();
-      const paymentsArray = data || [];
+      const response = await viewAllPaymentsService();
+      console.log("Payments response:", response);
+
+      const paymentsArray = Array.isArray(response.data) ? response.data : [];
 
       const sorted = paymentsArray.sort((a, b) => {
-        const statusA = a.status?.toLowerCase();
-        const statusB = b.status?.toLowerCase();
+        const statusA = (a.status || "").toLowerCase();
+        const statusB = (b.status || "").toLowerCase();
 
         if (statusA === "cancelled" && statusB !== "cancelled") return 1;
         if (statusB === "cancelled" && statusA !== "cancelled") return -1;
 
-        return new Date(b.createdAt) - new Date(a.createdAt);
+        return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
       });
 
       setPayments(sorted);
@@ -27,6 +28,7 @@ const AllPayment = () => {
       toast.error("Failed to fetch payments.");
     }
   };
+
 
   useEffect(() => {
     loadPayments();
