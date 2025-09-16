@@ -1,58 +1,115 @@
-const AllUser = () => {
-  return (
-    <main className="flex-1 px-6 ">
-      <section className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-bold mb-4">Users</h2>
-        <table className=" w-full text-left">
-          <thead>
-            <tr className="text-xl">
-              <th>Username</th>
-              <th>Email</th>
-              <th>Member Since</th>
-              <th>Number of Properties</th>
-            </tr>
-          </thead>
-          <tbody className="">
-            <tr>
-              <td>someusername</td>
-              <td>email@email.com</td>
-              <td>18 Nov 2020</td>
-              <td>6</td>
-              <td>
-                {" "}
-                <button
-                  className="w-full text-center bg-[#b17f44] text-white rounded-md py-2 mb-2 text-sm"
-                  type="submit"
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { getUsersService, deleteUserService } from "../../api/adminServices";
 
-      <section className="grid grid-cols-2 gap-6 mt-6">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold mb-4">Productivity</h2>
-          <div>
-            <div className="h-32 bg-gray-200 flex items-center justify-center">
-              Chart Placeholder
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold mb-4">Projects in Progress</h2>
-          <ul>
-            <li className="mb-2">
-              <p className="text-sm text-gray-600">Improve card readability</p>
-              <div className="flex items-center text-sm text-gray-500">
-                <span>12 comments</span>
-                <span className="ml-4">7 files</span>
-              </div>
-            </li>
-          </ul>
-        </div>
+const AllUser = () => {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [deletingUserId, setDeletingUserId] = useState(null);
+
+  // Fetch all non-admin users
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        console.log("Fetching all users...");
+        const usersData = await getUsersService();
+        console.log("Users fetched:", usersData);
+        setUsers(usersData || []);
+      } catch (error) {
+        const message = error.response?.data?.message || error.message;
+        toast.error(`Failed to fetch users: ${message}`);
+        console.error("Fetch users error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  // Delete user
+  const handleRemove = async (userId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to remove this user?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      setDeletingUserId(userId);
+      console.log(`Removing user with ID: ${userId}...`);
+
+      await deleteUserService(userId);
+
+      toast.success("User removed successfully");
+      setUsers((prev) => prev.filter((user) => user._id !== userId));
+    } catch (error) {
+      const message = error.response?.data?.message || error.message;
+      toast.error(`Failed to remove user: ${message}`);
+      console.error("Remove user error:", error);
+    } finally {
+      setDeletingUserId(null);
+    }
+  };
+
+  if (loading) {
+    return (
+      <main className="flex-1 px-6">
+        <section className="bg-white p-6 rounded-lg shadow-md min-h-[80vh] flex items-center justify-center">
+          <h2 className="text-lg font-semibold">Loading users...</h2>
+        </section>
+      </main>
+    );
+  }
+
+  return (
+    <main className="flex-1 px-6">
+      <section className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-xl font-bold mb-4">All Users</h2>
+
+        {users.length === 0 ? (
+          <p>No users found.</p>
+        ) : (
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="text-xl border-b">
+                <th className="py-2">Username</th>
+                <th className="py-2">Email</th>
+                <th className="py-2">Member Since</th>
+                <th className="py-2">Properties</th>
+                <th className="py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user._id} className="border-t">
+                  <td className="py-2">{user.username}</td>
+                  <td className="py-2">{user.email}</td>
+                  <td className="py-2">
+                    {new Date(user.createdAt).toLocaleDateString("en-GB", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </td>
+                  <td className="py-2">{user.properties?.length || 0}</td>
+                  <td className="py-2">
+                    <button
+                      className={`bg-[#b17f44] text-white rounded-md px-3 py-1 text-sm ${
+                        deletingUserId === user._id
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      }`}
+                      onClick={() => handleRemove(user._id)}
+                      disabled={deletingUserId === user._id}
+                    >
+                      {deletingUserId === user._id ? "Removing..." : "Remove"}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </section>
     </main>
   );

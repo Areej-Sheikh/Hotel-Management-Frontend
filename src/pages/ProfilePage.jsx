@@ -19,7 +19,6 @@ const ProfilePage = () => {
   const [bookingsData, setBookingsData] = useState([]);
   const [propertiesData, setPropertiesData] = useState([]);
   const [cancellingBookingId, setCancellingBookingId] = useState(null);
-  console.log(cancellingBookingId);
 
   // Load properties
   const loadProperty = async () => {
@@ -98,6 +97,7 @@ const ProfilePage = () => {
     try {
       setCancellingBookingId(id);
       await cancelBookingService(id);
+      console.log("Booking Id cancelled:", id);
       toast.success("Booking cancelled successfully!");
       loadBookings(); // reload bookings
     } catch (err) {

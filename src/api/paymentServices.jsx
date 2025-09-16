@@ -119,8 +119,6 @@ const handleRazorpayScreen = async (orderData) => {
   }
 };
 
-
-
 const loadScript = (src) => {
   return new Promise((resolve) => {
     const script = document.createElement("script");
@@ -129,4 +127,27 @@ const loadScript = (src) => {
     script.onerror = () => resolve(false);
     document.body.appendChild(script);
   });
+};
+
+// ----------------------
+// Admin / All Payments APIs
+// ----------------------
+export const viewAllPaymentsService = async () => {
+  try {
+    const { data } = await axios.get("/payments/all");
+    return data.payments || [];
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Failed to fetch payments");
+    return [];
+  }
+};
+
+export const deletePaymentService = async (paymentId) => {
+  try {
+    const { data } = await axios.delete(`/payments/${paymentId}`);
+    toast.success("Payment deleted successfully!");
+    return data;
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Failed to delete payment");
+  }
 };

@@ -24,7 +24,7 @@ import NotFound from "./pages/partials/NotFound";
 
 const App = () => {
   const user = useSelector((store) => store.user);
-  console.log(user);
+  console.log("User in App.jsx:", user);
   const [displayLogin, setDisplayLogin] = useState(false);
   const dispatch = useDispatch();
 
