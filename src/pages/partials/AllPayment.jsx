@@ -36,8 +36,10 @@ const AllPayment = () => {
 
   return (
     <main className="flex-1 px-6">
-      <section className="bg-white p-6 rounded-lg shadow-md min-h-[80vh]">
-        <h2 className="text-xl font-bold mb-4">Payments</h2>
+      <section className="bg-[#FDF6F0] p-6 rounded-lg shadow-md min-h-[80vh]">
+        <h2 className="text-xl font-bold mb-6 text-center text-[#B17F44]">
+          Payments
+        </h2>
         <div className="grid grid-cols-3 gap-6">
           {payments.length > 0 ? (
             payments.map((payment) => {
@@ -49,14 +51,14 @@ const AllPayment = () => {
                 <div
                   key={payment._id}
                   className={`py-5 px-6 mb-4 rounded-xl shadow transition-all duration-300
-                    ${
-                      isCancelled
-                        ? "bg-red-50 border border-red-300 hover:bg-red-100 hover:shadow-red-200"
-                        : isConfirmed
-                        ? "bg-white border border-green-200 hover:bg-green-50 hover:shadow-green-200"
-                        : "bg-white border border-gray-200 hover:shadow-gray-300"
-                    }
-                  `}
+                ${
+                  isCancelled
+                    ? "bg-red-50 border border-red-300 hover:bg-[#ffd2d2] hover:text-[#FDF6F0]"
+                    : isConfirmed
+                    ? "bg-white border border-green-200 hover:bg-[#defde0] hover:text-[#FDF6F0]"
+                    : "bg-white border border-gray-200 hover:bg-[#f9dddb] hover:text-[#FDF6F0]"
+                }
+              `}
                 >
                   <div className="flex justify-between mb-1">
                     <span className="font-bold text-md">Property</span>

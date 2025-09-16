@@ -14,18 +14,15 @@ import { calculateDuration } from "../utils/Math";
 
 const ProfilePage = () => {
   const user = useSelector((store) => store.user);
-  console.log("Redux user state:", user);
 
   const [bookingsData, setBookingsData] = useState([]);
   const [propertiesData, setPropertiesData] = useState([]);
   const [cancellingBookingId, setCancellingBookingId] = useState(null);
 
-  
   const loadProperty = async () => {
     try {
       const data = await viewMyPropertyService();
       setPropertiesData(data?.properties || []);
-      console.log("Property data fetched:", data?.properties);
     } catch (err) {
       console.error("Error fetching properties:", err);
     }
@@ -50,7 +47,6 @@ const ProfilePage = () => {
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
 
-      console.log("Bookings fetched and sorted:", sorted);
       setBookingsData(sorted || []);
     } catch (err) {
       console.error("Error fetching bookings:", err);
@@ -59,19 +55,10 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (user?.user?._id) {
-      console.log("Loading properties and bookings for user:", user.user._id);
       loadProperty();
       loadBookings();
     }
   }, [user]);
-
-  useEffect(() => {
-    console.log("Properties data updated:", propertiesData);
-  }, [propertiesData]);
-
-  useEffect(() => {
-    console.log("Bookings data updated:", bookingsData);
-  }, [bookingsData]);
 
   const deleteHandler = async (id) => {
     try {
@@ -93,9 +80,8 @@ const ProfilePage = () => {
     try {
       setCancellingBookingId(id);
       await cancelBookingService(id);
-      console.log("Booking Id cancelled:", id);
       toast.success("Booking cancelled successfully!");
-      loadBookings(); 
+      loadBookings();
     } catch (err) {
       console.error("Booking cancellation failed:", err.message);
     } finally {
@@ -104,20 +90,20 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="h-full w-full pt-28 px-20 bg-zinc-50">
+    <div className="h-full w-full pt-28 px-20 bg-[#FDF6F0] text-[#333333]">
       <div className="flex h-full relative w-full gap-8">
         {/* Sidebar */}
         <div className="w-[30vw] p-6 py-10 sticky top-[16vh] bg-white rounded-3xl h-fit shadow-[0px_0px_30px_2px_#e4e4e7] flex flex-col items-center space-y-6">
           <div>
-            <div className="flex items-center justify-center w-24 h-24 bg-black text-white text-5xl font-bold rounded-full mx-auto">
+            <div className="flex items-center justify-center w-24 h-24 bg-[#B17F44] text-white text-5xl font-bold rounded-full mx-auto">
               {user.user?.username?.charAt(0).toUpperCase() || "U"}
             </div>
 
             <div className="text-center mt-4">
-              <h2 className="text-4xl text-black font-semibold">
+              <h2 className="text-4xl text-[#B17F44] font-semibold">
                 {user.user?.username || "Guest"}
               </h2>
-              <p className="text-gray-500 text-sm">
+              <p className="text-[#666666] text-sm">
                 {user.user?.isAdmin ? "Admin" : "Guest"}
               </p>
             </div>
@@ -127,16 +113,21 @@ const ProfilePage = () => {
             <p className="text-lg font-bold">
               {calculateDuration(user.user?.createdAt)}
             </p>
-            <p className="text-gray-500 text-xs">on AuraStay</p>
+            <p className="text-[#666666] text-xs">on AuraStay</p>
           </div>
 
-          <div className="text-center space-y-1 text-gray-700 text-sm">
+          <div className="text-center space-y-1 text-[#666666] text-sm">
             <p>
-              Email: <span className="font-semibold">{user.user?.email}</span>
+              Email:{" "}
+              <span className="font-semibold text-[#333333]">
+                {user.user?.email}
+              </span>
             </p>
             <p>
               Bookings:{" "}
-              <span className="font-semibold">{bookingsData.length}</span>
+              <span className="font-semibold text-[#333333]">
+                {bookingsData.length}
+              </span>
             </p>
           </div>
         </div>
@@ -144,53 +135,58 @@ const ProfilePage = () => {
         {/* Main Content */}
         <div className="w-full pt-2">
           {/* Properties */}
-          <h1 className="text-3xl font-bold mb-4">My properties</h1>
-          <div className="grid grid-cols-4 gap-6">
+          <h1 className="text-3xl font-bold mb-4 text-[#B17F44]">
+            My properties
+          </h1>
+          <div className="grid grid-cols-3 gap-6">
             {propertiesData.length > 0 ? (
               propertiesData.map((property) => (
                 <div
                   key={property._id}
-                  className="border rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition"
+                  className="border rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition flex flex-col h-full"
                 >
-                  <Link to={`/property/${property._id}`}>
-                    <div className="w-full h-40 relative overflow-x-auto flex gap-2">
-                      {property.images?.map((img, index) => (
+                  <Link
+                    to={`/property/${property._id}`}
+                    className="flex flex-col h-full"
+                  >
+                    <div className="w-full h-60 relative overflow-hidden">
+                      {property.images?.[0] && (
                         <img
-                          key={index}
-                          src={img}
+                          src={property.images[0]}
                           alt={property.title}
-                          className="w-full h-full object-cover flex-shrink-0"
+                          className="w-full h-full object-cover"
                         />
-                      ))}
+                      )}
                     </div>
-                    <div className="p-4">
-                      <h2 className="font-semibold text-lg whitespace-nowrap overflow-hidden truncate">
-                        {property.title}
-                      </h2>
-                      <p className="text-black font-bold">
-                        ₹{property.price} / night
-                      </p>
-                      <p className="text-gray-500 text-sm whitespace-nowrap overflow-hidden truncate">
-                        {property.location}
-                      </p>
+                    <div className="p-4 flex-1 flex flex-col justify-between">
+                      <div>
+                        <h2 className="font-semibold text-lg truncate">
+                          {property.title}
+                        </h2>
+                        <p className="text-[#B17F44] font-bold">
+                          ₹{property.price} / night
+                        </p>
+                        <p className="text-[#666666] text-sm truncate">
+                          {property.location}
+                        </p>
+                      </div>
+                      <div className="flex gap-2 mt-4">
+                        <Link
+                          to={`/property/edit/${property._id}`}
+                          className="cursor-pointer text-center border border-[#B17F44] text-[#B17F44] rounded-md py-2 w-full hover:bg-[#B17F44]/20 transition"
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => deleteHandler(property._id)}
+                          className="cursor-pointer text-center bg-[#B17F44] text-white rounded-md py-2 w-full hover:bg-[#B17F44]/20 transition"
+                          type="button"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
                   </Link>
-
-                  <div className="flex gap-2 px-4 mb-2">
-                    <Link
-                      to={`/property/edit/${property._id}`}
-                      className="cursor-pointer text-center border border-[#b17f44] text-[#b17f44] rounded-md py-2 w-full"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      onClick={() => deleteHandler(property._id)}
-                      className="cursor-pointer text-center bg-[#b17f44] text-white rounded-md py-2 w-full"
-                      type="button"
-                    >
-                      Delete
-                    </button>
-                  </div>
                 </div>
               ))
             ) : (
@@ -199,62 +195,75 @@ const ProfilePage = () => {
           </div>
 
           {/* Bookings */}
-          <h1 className="text-3xl font-bold my-4 mt-10">My Bookings</h1>
+          <h1 className="text-3xl font-bold my-4 mt-10 text-[#B17F44]">
+            My Bookings
+          </h1>
           <div className="grid grid-cols-3 gap-x-3">
             {bookingsData.length > 0 ? (
               bookingsData.map((booking) => {
                 const isCancelled =
                   booking.status?.toLowerCase() === "cancelled";
+                const statusColor =
+                  booking.status?.toLowerCase() === "confirmed"
+                    ? "#4CAF50"
+                    : booking.status?.toLowerCase() === "pending"
+                    ? "#F39C12"
+                    : "#E74C3C";
 
                 return (
                   <div
                     key={booking._id}
                     className={`py-5 px-8 mb-2 rounded-xl shadow transition-all duration-300 ${
                       isCancelled
-                        ? "bg-red-50 border border-red-300"
+                        ? "bg-[#E74C3C]/10 border border-[#E74C3C]"
                         : "bg-white"
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <h1 className="text-md font-bold">Place</h1>
-                      <h1 className="text-sm font-light">
+                      <h1 className="text-md font-bold text-[#333333]">
+                        Place
+                      </h1>
+                      <h1 className="text-sm font-light text-[#666666]">
                         {booking.property?.title || "N/A"}
                       </h1>
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <h3 className="text-md font-bold">Price</h3>
-                      <h3 className="text-sm font-light">
+                      <h3 className="text-md font-bold text-[#333333]">
+                        Price
+                      </h3>
+                      <h3 className="text-sm font-light text-[#666666]">
                         ₹{booking.totalPrice}
                       </h3>
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <h3 className="text-md font-bold">Status</h3>
+                      <h3 className="text-md font-bold text-[#333333]">
+                        Status
+                      </h3>
                       <h3
-                        className={`text-sm font-bold ${
-                          isCancelled
-                            ? "text-red-600"
-                            : booking.status?.toLowerCase() === "confirmed"
-                            ? "text-green-600"
-                            : "text-orange-600"
-                        }`}
+                        className="text-sm font-bold"
+                        style={{ color: statusColor }}
                       >
                         {booking.status || "N/A"}
                       </h3>
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <h3 className="text-md font-bold flex-row">Order ID</h3>
-                      <h3 className="text-sm font-light whitespace-nowrap overflow-hidden truncate">
+                      <h3 className="text-md font-bold text-[#333333]">
+                        Order ID
+                      </h3>
+                      <h3 className="text-sm font-light text-[#666666] truncate">
                         {booking.razorpayOrderId}
                       </h3>
                     </div>
 
                     <div className="flex justify-between mt-4">
                       <div className="flex flex-col">
-                        <h3 className="text-md font-bold">Check In</h3>
-                        <h3 className="text-sm font-light">
+                        <h3 className="text-md font-bold text-[#333333]">
+                          Check In
+                        </h3>
+                        <h3 className="text-sm font-light text-[#666666]">
                           {new Date(booking.checkInDate).toLocaleDateString(
                             "en-GB",
                             {
@@ -267,8 +276,10 @@ const ProfilePage = () => {
                       </div>
 
                       <div className="flex flex-col items-end">
-                        <h3 className="text-md font-bold">Check Out</h3>
-                        <h3 className="text-sm font-light">
+                        <h3 className="text-md font-bold text-[#333333]">
+                          Check Out
+                        </h3>
+                        <h3 className="text-sm font-light text-[#666666]">
                           {new Date(booking.checkOutDate).toLocaleDateString(
                             "en-GB",
                             {
@@ -286,7 +297,7 @@ const ProfilePage = () => {
                       className={`cursor-pointer text-center border rounded-md mt-3 py-2 w-full ${
                         isCancelled
                           ? "bg-gray-300 text-gray-600 border-gray-300 cursor-not-allowed"
-                          : "border-[#b17f44] text-[#b17f44] bg-white hover:bg-[#b17f44] hover:text-white transition"
+                          : "border-[#B17F44] text-[#B17F44] bg-white hover:bg-[#B17F44] hover:text-white transition"
                       }`}
                       type="button"
                       disabled={

@@ -13,14 +13,15 @@ const Home = () => {
   }, [dispatch, query]);
 
   return (
-    <div className="bg-zinc-50 pt-24   relative w-full h-full">
-      <h1 className="text-center mt-10 text-[4.5vw]">
-        Experience the <span className="text-[#b17f44]">Aura</span> <br /> of
+    <div className="bg-[#FDF6F0] pt-24 relative w-full h-full">
+      <h1 className="text-center mt-10 text-[4.5vw] text-[#333333]">
+        Experience the <span className="text-[#B17F44]">Aura</span> <br /> of
         Elegance.
       </h1>
-      <Cards />
-
-      <Footer />
+      <Cards />{" "}
+      {/* Cards should also have colors applied inside their component */}
+      <Footer />{" "}
+      {/* Footer should also have colors applied inside its component */}
     </div>
   );
 };

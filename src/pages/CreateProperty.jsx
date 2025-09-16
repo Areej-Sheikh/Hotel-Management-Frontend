@@ -34,11 +34,11 @@ const CreateProperty = () => {
   };
 
   return (
-    <div className="loginPage flex z-[2] top-0 left-0 w-full bg-zinc-100 h-screen items-center justify-center">
-      <div className=" py-1 w-[35%] bg-zinc-50 rounded-xl shadow-xl ">
+    <div className="loginPage flex z-[2] top-0 left-0 w-full bg-[#FDF6F0] h-screen items-center justify-center">
+      <div className=" py-1 w-[35%] bg-[#FDF6F0] rounded-xl mt-[9%] shadow-xl ">
         <div className="w-full py-4 relative">
-          <div className="absolute left-[3%] top-1/2 -translate-y-1/2"></div>
-          <h1 className="text-center font-bold text-lg text-zinc-800">
+          <div className="absolute left-[3%] top-1/2 translate-y-[-50%]"></div>
+          <h1 className="text-center font-bold text-lg text-[#B17F44] ">
             Create Property
           </h1>
         </div>
@@ -49,7 +49,7 @@ const CreateProperty = () => {
               <div className="w-full p-4 text-md relative flex justify-center items-center gap-3 border-b border-zinc-500">
                 <label>Title:</label>
                 <input
-                  className="w-full h-full focus:outline-none text-xl"
+                  className="w-full h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
                   type="text"
                   {...register("title", { required: "Title is required" })}
                 />
@@ -64,7 +64,7 @@ const CreateProperty = () => {
               <div className="p-4 text-md relative w-full flex justify-center items-center gap-3 border-b border-zinc-500">
                 <label>Description:</label>
                 <input
-                  className="w-full h-full focus:outline-none text-xl"
+                  className="w-full h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
                   type="text"
                   {...register("description", {
                     required: "Description is required",
@@ -81,7 +81,7 @@ const CreateProperty = () => {
               <div className="p-4 text-md relative w-full flex justify-center items-center gap-3 border-b border-zinc-500">
                 <label>Location:</label>
                 <input
-                  className="w-full h-full focus:outline-none text-xl"
+                  className="w-full h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
                   type="text"
                   {...register("location", {
                     required: "Location is required",
@@ -98,7 +98,7 @@ const CreateProperty = () => {
               <div className="p-4 text-md relative w-full flex justify-center items-center gap-3 border-b border-zinc-500">
                 <label>Price (₹ per night):</label>
                 <input
-                  className="w-[65%] h-full focus:outline-none text-xl"
+                  className="w-[65%] h-ful bg-[#FDF6F0] text-[#B17F44]l focus:outline-none text-xl"
                   type="number"
                   {...register("price", { required: "Price is required" })}
                 />
@@ -113,7 +113,7 @@ const CreateProperty = () => {
               <div className="p-4 text-md relative w-full flex justify-center items-center gap-3 border-b border-zinc-500">
                 <label>Amenities:</label>
                 <input
-                  className="w-full h-full focus:outline-none text-xl"
+                  className="w-full h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
                   type="text"
                   {...register("amenities", {
                     required: "Amenities are required",
@@ -130,7 +130,7 @@ const CreateProperty = () => {
               <div className="p-4 text-md relative w-full flex justify-center items-center gap-3">
                 <label>Images:</label>
                 <input
-                  className="w-full h-full focus:outline-none text-xl"
+                  className="w-full h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
                   type="url"
                   {...register("images", {
                     required: "Images are required",

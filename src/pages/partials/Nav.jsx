@@ -48,11 +48,11 @@ const Nav = () => {
   return (
     <>
       <nav className="fixed top-0 w-full z-[1]">
-        <div className="nav-p1 w-full px-20 flex justify-between items-center border-b border-[#dfdfdf] bg-zinc-50">
-          <Link to={"/"} className="logo h-24">
+        <div className="nav-p1 w-full px-20 flex justify-between items-center border-b border-[#B17F44] bg-[#B17F44] ">
+          <Link to={"/"} className="logo h-24  bg-[#FDF6F0] rounded-full">
             <img
               draggable="false"
-              className="h-full object-cover"
+              className="h-full object-cover "
               src="/images/logo.png"
               alt="Logo"
             />
@@ -60,25 +60,31 @@ const Nav = () => {
 
           <div className="flex gap-8 w-fit items-center">
             {isLoggedIn && (
-              <Link to={"/property/create"} className="font-[600] text-sm">
+              <Link
+                to={"/property/create"}
+                className="text-lg font-semibold text-[#FDF6F0] "
+              >
                 Add your property
               </Link>
             )}
 
             {isAdmin && (
-              <Link to={"/admin-panel/users"} className="font-[600] text-sm">
+              <Link
+                to={"/admin-panel/users"}
+                className=" text-lg font-semibold text-[#FDF6F0] "
+              >
                 Admin panel
               </Link>
             )}
 
             <div>
-              <i className="ri-global-line text-lg"></i>
+              <i className="ri-global-line text-2xl text-[#FDF6F0]"></i>
             </div>
 
             {pathname === "/" && (
               <div
                 onClick={filterHandler}
-                className="py-2 px-5 border border-zinc-400 rounded-lg text-zinc-500 cursor-pointer"
+                className="py-2 px-5 border border-[#FDF6F0] rounded-lg text-[#FDF6F0] cursor-pointer hover:bg-[#B17F44]/20 transition"
               >
                 Filters
               </div>
@@ -86,24 +92,24 @@ const Nav = () => {
 
             <div
               onClick={toggleMenu}
-              className="flex cursor-pointer relative items-center border-2 border-[#666] py-1 px-3 rounded-full gap-3 menu-handler"
+              className="flex cursor-pointer relative items-center border border-[#FDF6F0] py-1 px-3 rounded-full gap-3 menu-handler"
             >
-              <i className="ri-menu-line font-bold"></i>
-              <div className="bg-[#666] h-8 aspect-square flex items-end justify-center rounded-full">
+              <i className="ri-menu-line text-2xl font-medium text-[#FDF6F0]"></i>
+              <div className="bg-[#FDF6F0] h-8 aspect-square flex items-end justify-center rounded-full">
                 <div className="rounded-full text-white text-lg overflow-hidden">
-                  <i className="ri-user-3-fill text-white"></i>
+                  <i className="ri-user-3-fill text-2xl text-[#B17F44]"></i>
                 </div>
               </div>
 
               <div
                 className={`menu absolute ${
                   isMenuVisible ? "block" : "hidden"
-                } top-[110%] w-[280%] shadow-[0_4px_20px_3px_rgba(0,0,0,0.1)] overflow-hidden z-[2] right-0 bg-zinc-50 rounded-xl`}
+                } top-[110%] w-[280%] shadow-[0_4px_20px_3px_rgba(0,0,0,0.1)] overflow-hidden z-[2] right-0 bg-[#FDF6F0] rounded-xl`}
               >
                 {isLoggedIn && (
                   <Link to={"/profile"}>
-                    <h3 className="text-sm px-4 hover:bg-zinc-200/[.5] cursor-pointer transition-all py-6">
-                      My profile
+                    <h3 className=" text-medium font-semibold px-4 text-[#B17F44] hover:bg-[#B17F44]/20 cursor-pointer transition-all py-6">
+                      My Profile
                     </h3>
                   </Link>
                 )}
@@ -111,13 +117,13 @@ const Nav = () => {
                   <>
                     <h3
                       onClick={signupHandler}
-                      className="text-sm px-4 hover:bg-zinc-200/[.5] cursor-pointer transition-all py-6"
+                      className=" text-medium font-semibold px-4 text-[#B17F44] hover:bg-[#B17F44]/20 cursor-pointer transition-all py-6"
                     >
                       Sign up
                     </h3>
                     <h3
                       onClick={loginHandler}
-                      className="text-sm px-4 hover:bg-zinc-200/[.5] cursor-pointer transition-all py-6 border-b border-zinc-300"
+                      className=" text-medium font-semibold px-4 text-[#B17F44] hover:bg-[#B17F44]/20 cursor-pointer transition-all py-6 border-b border-[#B17F44]"
                     >
                       Log in
                     </h3>
@@ -127,7 +133,7 @@ const Nav = () => {
                 {isLoggedIn && (
                   <h3
                     onClick={logoutHandler}
-                    className="text-sm px-4 hover:bg-zinc-200/[.5] cursor-pointer transition-all py-6"
+                    className=" text-medium font-semibold px-4 text-[#B17F44] hover:bg-[#B17F44]/20 cursor-pointer transition-all py-6"
                   >
                     Logout
                   </h3>

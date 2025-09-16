@@ -4,15 +4,9 @@ import { searchPropertiesAction } from "./../../store/actions/propertyAction";
 import PropTypes from "prop-types";
 
 const Filter = ({ display, setDisplay }) => {
-  Filter.propTypes = {
-    display: PropTypes.bool.isRequired,
-    setDisplay: PropTypes.func.isRequired,
-  };
-
   const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
   const properties = useSelector((store) => store.property.properties);
-
   const locations = [...new Set(properties.map((item) => item.location))];
 
   const onSubmit = (data) => {
@@ -20,7 +14,6 @@ const Filter = ({ display, setDisplay }) => {
       alert("Min price cannot be greater than Max price");
       return;
     }
-
     const query = `?location=${data.location}&minPrice=${data.minPrice}&maxPrice=${data.maxPrice}`;
     dispatch(searchPropertiesAction(query));
     setDisplay(false);
@@ -34,27 +27,32 @@ const Filter = ({ display, setDisplay }) => {
       onClick={() => setDisplay(false)}
     >
       <div
-        className="py-1 w-[35%] bg-zinc-50 rounded-xl"
+        className="py-1 w-[35%] max-w-md sm:w-[80%] bg-zinc-50 rounded-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="w-full py-4 relative border-b border-[#dfdfdf]">
+        <div className="w-full py-4 relative border-b border-[#B17F44]/50">
           <div className="absolute left-[3%] top-1/2 -translate-y-1/2">
             <i
               onClick={() => setDisplay(false)}
+              aria-label="Close filter"
               className="ri-close-large-line text-zinc-800 cursor-pointer"
-            ></i>
+            />
           </div>
-          <h1 className="text-center font-bold text-lg text-zinc-800">
+          <h1 className="text-center font-bold text-lg text-[#B17F44]">
             Filters
           </h1>
         </div>
 
-        <div className="pt-5 px-5 ">
-          <div className="flex flex-col gap-4">
-            <h1 className="text-lg font-bold">Location</h1>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="pt-5 px-5 flex flex-col gap-7"
+        >
+          {/* Location */}
+          <div className="flex flex-col gap-2">
+            <h1 className="text-lg font-bold  text-[#B17F44]">Location</h1>
             <select
               {...register("location", { required: "Location is required" })}
-              className="border p-2 rounded-md w-full"
+              className="border border-[#B17F44]/50 p-2 rounded-md w-full"
               defaultValue=""
             >
               <option value="" disabled>
@@ -68,15 +66,16 @@ const Filter = ({ display, setDisplay }) => {
             </select>
           </div>
 
-          <div className="flex flex-col gap-4 my-7">
-            <h1 className="text-lg font-bold">
-              Price Range <span className="text-sm text-zinc-500">(₹)</span>
+          {/* Price Range */}
+          <div className="flex flex-col gap-2">
+            <h1 className="text-lg text-[#B17F44] font-bold">
+              Price Range <span className="text-sm text-[#B17F44]">(₹)</span>
             </h1>
             <div className="flex gap-4">
               <input
                 type="number"
                 placeholder="Min (₹)"
-                className="border p-2 rounded-md w-full"
+                className="border  text-[#B17F44] border-[#B17F44]/50 p-2 rounded-md w-full"
                 max="99999999"
                 min="0"
                 {...register("minPrice")}
@@ -84,25 +83,29 @@ const Filter = ({ display, setDisplay }) => {
               <input
                 type="number"
                 placeholder="Max (₹)"
-                className="border p-2 rounded-md w-full"
+                className="border  text-[#B17F44] border-[#B17F44]/50 p-2 rounded-md w-full"
                 max="99999999"
                 min="0"
                 {...register("maxPrice")}
               />
             </div>
-
-            <button
-              onClick={handleSubmit(onSubmit)}
-              className="w-full text-center bg-[#b17f44] mt-4 text-white rounded-md py-3"
-              type="submit"
-            >
-              Continue
-            </button>
           </div>
-        </div>
+
+          <button
+            type="submit"
+            className="w-full bg-[#B17F44] hover:bg-[#a06c3a] text-white rounded-md mb-3 py-3 transition"
+          >
+            Continue
+          </button>
+        </form>
       </div>
     </div>
   );
+};
+
+Filter.propTypes = {
+  display: PropTypes.bool.isRequired,
+  setDisplay: PropTypes.func.isRequired,
 };
 
 export default Filter;

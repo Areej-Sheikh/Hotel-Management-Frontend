@@ -17,7 +17,10 @@ const Cards = () => {
           <Link
             key={property._id}
             to={`/property/${property._id}`}
-            className="border rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition cursor-pointer"
+            className="border rounded-lg overflow-hidden 
+             shadow-[0_4px_6px_rgba(177,127,68,0.3)] 
+             hover:shadow-[0_8px_20px_rgba(177,127,68,0.5)] 
+             transition cursor-pointer"
           >
             <div className="w-full h-52 relative">
               <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">

@@ -24,7 +24,6 @@ const EditProperty = () => {
       try {
         const res = await viewPropertyService(id);
         const propertyData = res.property;
-        console.log("🏠 Fetched property:", propertyData);
         if (!propertyData) throw new Error("Property not found");
 
         reset({
@@ -60,11 +59,9 @@ const EditProperty = () => {
           .filter(Boolean),
       };
 
-      const updatedProperty = await updatePropertyService(processedData);
-      console.log("💾 Property updated:", updatedProperty);
-
+      await updatePropertyService(processedData);
       toast.success("Property updated successfully!");
-      navigate("/profile"); 
+      navigate("/profile");
     } catch (err) {
       console.error(err);
       toast.error("Failed to update property.");
@@ -74,104 +71,129 @@ const EditProperty = () => {
   if (loading) return <p className="text-center mt-10">Loading property...</p>;
 
   return (
-    <div className="flex items-center justify-center w-full h-screen bg-zinc-100">
-      <div className="w-[35%] bg-zinc-50 rounded-xl shadow-xl py-1">
-        <h1 className="text-center text-lg font-bold py-4">Edit Property</h1>
-        <div className="px-5 py-5">
+    <div className="loginPage flex z-[2] top-0 left-0 w-full bg-[#FDF6F0] h-screen items-center justify-center">
+      <div className="py-1 w-[35%] bg-[#FDF6F0] rounded-xl mt-[9%] shadow-xl">
+        <div className="w-full py-4 relative">
+          <div className="absolute left-[3%] top-1/2 translate-y-[-50%]"></div>
+          <h1 className="text-center font-bold text-lg text-[#B17F44]">
+            Edit Property
+          </h1>
+        </div>
+
+        <div className="py-5 px-5">
           <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Title */}
-            <div className="p-4 flex gap-3 border-b border-zinc-500 relative">
-              <label>Title:</label>
-              <input
-                className="w-full focus:outline-none text-xl"
-                {...register("title", { required: "Title is required" })}
-              />
-              {errors.title && (
-                <p className="absolute bottom-0 left-[3%] text-xs text-red-500">
-                  {errors.title.message}
-                </p>
-              )}
-            </div>
+            <div className="w-full border border-zinc-500 rounded-lg">
+              {/* Title */}
+              <div className="w-full p-4 text-md relative flex justify-center items-center gap-3 border-b border-zinc-500">
+                <label>Title:</label>
+                <input
+                  className="w-full h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
+                  type="text"
+                  {...register("title", { required: "Title is required" })}
+                />
+                {errors.title && (
+                  <p className="absolute bottom-0 left-[3%] w-full text-[red] text-xs">
+                    <i className="ri-information-fill text-[red]"></i>{" "}
+                    {errors.title.message}
+                  </p>
+                )}
+              </div>
 
-            {/* Description */}
-            <div className="p-4 flex gap-3 border-b border-zinc-500 relative">
-              <label>Description:</label>
-              <input
-                className="w-full focus:outline-none text-xl"
-                {...register("description", {
-                  required: "Description is required",
-                })}
-              />
-              {errors.description && (
-                <p className="absolute bottom-0 left-[3%] text-xs text-red-500">
-                  {errors.description.message}
-                </p>
-              )}
-            </div>
+              {/* Description */}
+              <div className="p-4 text-md relative w-full flex justify-center items-center gap-3 border-b border-zinc-500">
+                <label>Description:</label>
+                <input
+                  className="w-full h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
+                  type="text"
+                  {...register("description", {
+                    required: "Description is required",
+                  })}
+                />
+                {errors.description && (
+                  <p className="absolute bottom-0 left-[3%] w-full text-[red] text-xs">
+                    <i className="ri-information-fill text-[red]"></i>{" "}
+                    {errors.description.message}
+                  </p>
+                )}
+              </div>
 
-            {/* Location */}
-            <div className="p-4 flex gap-3 border-b border-zinc-500 relative">
-              <label>Location:</label>
-              <input
-                className="w-full focus:outline-none text-xl"
-                {...register("location", { required: "Location is required" })}
-              />
-              {errors.location && (
-                <p className="absolute bottom-0 left-[3%] text-xs text-red-500">
-                  {errors.location.message}
-                </p>
-              )}
-            </div>
+              {/* Location */}
+              <div className="p-4 text-md relative w-full flex justify-center items-center gap-3 border-b border-zinc-500">
+                <label>Location:</label>
+                <input
+                  className="w-full h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
+                  type="text"
+                  {...register("location", {
+                    required: "Location is required",
+                  })}
+                />
+                {errors.location && (
+                  <p className="absolute bottom-0 left-[3%] w-full text-[red] text-xs">
+                    <i className="ri-information-fill text-[red]"></i>{" "}
+                    {errors.location.message}
+                  </p>
+                )}
+              </div>
 
-            {/* Price */}
-            <div className="p-4 flex gap-3 border-b border-zinc-500 relative">
-              <label>Price (₹ per night):</label>
-              <input
-                className="w-[65%] focus:outline-none text-xl"
-                type="number"
-                {...register("price", { required: "Price is required" })}
-              />
-              {errors.price && (
-                <p className="absolute bottom-0 left-[3%] text-xs text-red-500">
-                  {errors.price.message}
-                </p>
-              )}
-            </div>
+              {/* Price */}
+              <div className="p-4 text-md relative w-full flex justify-center items-center gap-3 border-b border-zinc-500">
+                <label>Price (₹ per night):</label>
+                <input
+                  className="w-[65%] h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
+                  type="number"
+                  {...register("price", { required: "Price is required" })}
+                />
+                {errors.price && (
+                  <p className="absolute bottom-0 left-[3%] w-full text-[red] text-xs">
+                    <i className="ri-information-fill text-[red]"></i>{" "}
+                    {errors.price.message}
+                  </p>
+                )}
+              </div>
 
-            {/* Amenities */}
-            <div className="p-4 flex gap-3 border-b border-zinc-500 relative">
-              <label>Amenities:</label>
-              <input
-                className="w-full focus:outline-none text-xl"
-                placeholder="Pool, Wifi, AC"
-                {...register("amenities", {
-                  required: "Amenities are required",
-                })}
-              />
-              {errors.amenities && (
-                <p className="absolute bottom-0 left-[3%] text-xs text-red-500">
-                  {errors.amenities.message}
-                </p>
-              )}
-            </div>
+              {/* Amenities */}
+              <div className="p-4 text-md relative w-full flex justify-center items-center gap-3 border-b border-zinc-500">
+                <label>Amenities:</label>
+                <input
+                  className="w-full h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
+                  placeholder="Pool, Wifi, AC"
+                  {...register("amenities", {
+                    required: "Amenities are required",
+                  })}
+                />
+                {errors.amenities && (
+                  <p className="absolute bottom-0 left-[3%] w-full text-[red] text-xs">
+                    <i className="ri-information-fill text-[red]"></i>{" "}
+                    {errors.amenities.message}
+                  </p>
+                )}
+              </div>
 
-            {/* Images */}
-            <div className="p-4 flex gap-3 relative">
-              <label>Images:</label>
-              <input
-                className="w-full focus:outline-none text-xl"
-                placeholder="Enter image URLs separated by commas"
-                {...register("images", { required: "Images are required" })}
-              />
-              {errors.images && (
-                <p className="absolute bottom-0 left-[3%] text-xs text-red-500">
-                  {errors.images.message}
-                </p>
-              )}
+              {/* Images */}
+              <div className="p-4 text-md relative w-full flex justify-center items-center gap-3">
+                <label>Images:</label>
+                <input
+                  className="w-full h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
+                  placeholder="Enter image URLs separated by commas"
+                  {...register("images", {
+                    required: "Images are required",
+                    pattern: {
+                      value: /(^\s*(https?:\/\/.*)\s*$)/i,
+                      message: "Invalid image URL",
+                    },
+                  })}
+                />
+                {errors.images && (
+                  <p className="absolute bottom-0 left-[3%] w-full text-[red] text-xs">
+                    <i className="ri-information-fill text-[red]"></i>{" "}
+                    {errors.images.message}
+                  </p>
+                )}
+              </div>
             </div>
 
             <button
-              className="w-full bg-[#b17f44] text-white rounded-md py-3 mt-4"
+              className="w-full text-center bg-[#B17F44] mt-4 text-white rounded-md py-3"
               type="submit"
             >
               Save Changes

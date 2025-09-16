@@ -77,20 +77,20 @@ const AllBookings = () => {
 
   return (
     <main className="flex-1 px-6">
-      <section className="bg-white p-6 rounded-lg shadow-md">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold">All Bookings</h2>
+      <section className="bg-[#FDF6F0] p-6 rounded-lg shadow-md min-h-[80vh]">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-[#B17F44]">All Bookings</h2>
 
-          {/* 🔥 Sort by Status Dropdown */}
+          {/* Sort by Status Dropdown */}
           <div className="relative w-40">
             <button
               onClick={() => setOpen(!open)}
-              className="border px-3 py-1 rounded-md w-full text-left"
+              className="border border-[#B17F44] px-3 py-1 rounded-md w-full text-left text-[#B17F44] hover:bg-[#B17F44]/10 transition"
             >
               {sortStatus}
             </button>
             {open && (
-              <ul className="absolute w-full bg-white border rounded-md mt-1 shadow-lg z-10">
+              <ul className="absolute w-full bg-[#FDF6F0] border border-[#B17F44] rounded-md mt-1 shadow-lg z-10">
                 {["All", "Pending", "Confirmed", "Cancelled"].map((status) => (
                   <li
                     key={status}
@@ -98,7 +98,7 @@ const AllBookings = () => {
                       setSortStatus(status);
                       setOpen(false);
                     }}
-                    className="px-4 py-2 hover:bg-blue-100 hover:text-blue-600 cursor-pointer transition-colors rounded-md"
+                    className="px-4 py-2 cursor-pointer rounded-md hover:bg-[#B17F44] hover:text-[#FDF6F0] transition-colors"
                   >
                     {status}
                   </li>
@@ -109,22 +109,25 @@ const AllBookings = () => {
         </div>
 
         {filteredBookings.length === 0 ? (
-          <p>No bookings found.</p>
+          <p className="text-[#B17F44]">No bookings found.</p>
         ) : (
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="text-xl border-b">
-                <th className="py-2">Property</th>
-                <th className="py-2">Booked By</th>
-                <th className="py-2">Check-in</th>
-                <th className="py-2">Check-out</th>
-                <th className="py-2">Status</th>
-                <th className="py-2">Actions</th>
+              <tr className="text-lg border-b border-[#B17F44]">
+                <th className="py-2 text-[#B17F44]">Property</th>
+                <th className="py-2 text-[#B17F44]">Booked By</th>
+                <th className="py-2 text-[#B17F44]">Check-in</th>
+                <th className="py-2 text-[#B17F44]">Check-out</th>
+                <th className="py-2 text-[#B17F44]">Status</th>
+                <th className="py-2 text-[#B17F44]">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredBookings.map((booking) => (
-                <tr key={booking._id} className="border-b hover:bg-gray-100">
+                <tr
+                  key={booking._id}
+                  className="border-b border-[#B17F44] hover:bg-[#f9e9db] hover:text-[#FDF6F0] transition-colors"
+                >
                   <td className="py-2">
                     {booking.property?.title || "Unknown"}
                   </td>
@@ -150,7 +153,7 @@ const AllBookings = () => {
                   </td>
                   <td className="py-2">
                     <button
-                      className={`bg-red-500 text-white rounded-md px-3 py-1 text-sm ${
+                      className={`bg-[#B17F44] text-[#FDF6F0] rounded-md px-3 py-1 text-sm transition hover:bg-[#9b6b37] ${
                         deletingBookingId === booking._id
                           ? "opacity-50 cursor-not-allowed"
                           : ""

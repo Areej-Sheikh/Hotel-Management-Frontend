@@ -1,15 +1,18 @@
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 py-8 px-20">
-      <div className="container mx-auto ">
-        <div className="border-b border-gray-300 pb-6 mb-6">
+    <footer className="bg-[#FDF6F0] py-8 px-20 text-[#333333]">
+      <div className="container mx-auto">
+        {/* Inspiration Section */}
+        <div className="border-b border-[#B17F44]/40 pb-6 mb-6">
           <h2 className="text-lg font-semibold mb-4">
             Inspiration for future getaways
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
             <div>
-              <h3 className="font-medium mb-2">Popular</h3>
-              <ul className="space-y-1 text-sm text-gray-600">
+              <h3 className="text-medium mb-2 font-semibold text-[#B17F44]">
+                Popular
+              </h3>
+              <ul className="space-y-1 text-sm  text-[#666666] mb-1">
                 <li>Canmore - Apartment rentals</li>
                 <li>Benalmádena - Beach house rentals</li>
                 <li>Marbella - Beach house rentals</li>
@@ -18,8 +21,10 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium mb-2">Outdoors</h3>
-              <ul className="space-y-1 text-sm text-gray-600">
+              <h3 className="text-medium mb-2 font-semibold text-[#B17F44]">
+                Outdoors
+              </h3>
+              <ul className="space-y-1 text-sm  text-[#666666]">
                 <li>Jasper - Cabin rentals</li>
                 <li>Mountain View - Cabin rentals</li>
                 <li>Tucson - Pet-friendly rentals</li>
@@ -28,8 +33,10 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h3 className="font-medium mb-2">Family</h3>
-              <ul className="space-y-1 text-sm text-gray-600">
+              <h3 className="text-medium mb-2 font-semibold text-[#B17F44]">
+                Family
+              </h3>
+              <ul className="space-y-1 text-sm  text-[#666666]">
                 <li>Anaheim - Family-friendly rentals</li>
                 <li>Monterey - Cottage rentals</li>
                 <li>Paso Robles - House rentals</li>
@@ -40,10 +47,11 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Support / Hosting / Airbnb Sections */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
           <div>
-            <h3 className="font-semibold mb-3">Support</h3>
-            <ul className="space-y-2 text-sm text-gray-600">
+            <h3 className="font-semibold mb-3 text-[#B17F44]">Support</h3>
+            <ul className="space-y-2 text-sm text-[#666666]">
               <li>Help Centre</li>
               <li>AirCover</li>
               <li>Anti-discrimination</li>
@@ -53,8 +61,8 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold mb-3">Hosting</h3>
-            <ul className="space-y-2 text-sm text-gray-600">
+            <h3 className="font-semibold mb-3 text-[#B17F44]">Hosting</h3>
+            <ul className="space-y-2 text-sm text-[#666666]">
               <li>Airbnb your home</li>
               <li>AirCover for Hosts</li>
               <li>Hosting resources</li>
@@ -64,8 +72,8 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h3 className="font-semibold mb-3">Airbnb</h3>
-            <ul className="space-y-2 text-sm text-gray-600">
+            <h3 className="font-semibold mb-3 text-[#B17F44]">Airbnb</h3>
+            <ul className="space-y-2 text-sm text-[#666666]">
               <li>Newsroom</li>
               <li>New features</li>
               <li>Careers</li>
@@ -75,34 +83,35 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-between items-center mt-8 text-sm text-gray-500">
+        {/* Footer Bottom */}
+        <div className="flex flex-col sm:flex-row justify-between items-center mt-8 text-sm text-[#666666]">
           <p>
             © 2024 Airbnb, Inc. · Privacy · Terms · Sitemap · Company details
           </p>
           <div className="flex items-center space-x-4 mt-4 sm:mt-0">
             <span>English (IN)</span>
-            <span>Currency: ₹</span>
+
             <div className="flex space-x-3">
               <a
                 href="#"
                 aria-label="Facebook"
-                className="flex h-6 aspect-square items-center justify-center text-xl bg-zinc-800 "
+                className="flex h-6 aspect-square items-center justify-center text-xl bg-[#B17F44] rounded"
               >
-                <i className="ri-facebook-fill text-zinc-100"></i>
+                <i className="ri-facebook-fill text-white"></i>
               </a>
               <a
                 href="#"
                 aria-label="Twitter"
-                className="flex h-6 aspect-square items-center justify-center text-xl bg-zinc-800 "
+                className="flex h-6 aspect-square items-center justify-center text-xl bg-[#B17F44] rounded"
               >
-                <i className="ri-twitter-fill text-zinc-100"></i>
+                <i className="ri-twitter-fill text-white"></i>
               </a>
               <a
                 href="#"
                 aria-label="Instagram"
-                className="flex h-6 aspect-square items-center justify-center text-xl bg-zinc-800 "
+                className="flex h-6 aspect-square items-center justify-center text-xl bg-[#B17F44] rounded"
               >
-                <i className="ri-instagram-line text-zinc-100"></i>
+                <i className="ri-instagram-line text-white"></i>
               </a>
             </div>
           </div>

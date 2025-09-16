@@ -46,9 +46,9 @@ const BookingCard = ({ property }) => {
 
   return (
     <div className="border p-6 max-w-sm mx-auto shadow-md rounded-lg">
-      <h2 className="text-xl font-bold mb-4">
+      <h2 className="text-2xl text-[#B17F44] font-bold mb-4">
         ₹{nightRate.toLocaleString()}{" "}
-        <span className="text-sm"> per night</span>
+        <span className="text-sm text-[#B17F44]"> per night</span>
       </h2>
 
       <div className="border rounded-md mb-4">
@@ -103,7 +103,7 @@ const BookingCard = ({ property }) => {
           </span>
           <span>₹{totalBeforeTaxes.toLocaleString()}</span>
         </div>
-        <div className="flex justify-between font-bold text-lg">
+        <div className="flex justify-between font-bold text-[#B17F44] text-xl">
           <span>Total before taxes</span>
           <span>₹{totalBeforeTaxes.toLocaleString()}</span>
         </div>
