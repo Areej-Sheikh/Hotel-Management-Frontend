@@ -12,7 +12,7 @@ const AdminPanel = () => {
   ];
 
   return (
-    <div className="min-h-screen flex bg-zinc-50 px-20 pt-28 pb-10 relative">
+    <div className="min-h-screen flex bg-orange-50 px-20 pt-28 pb-10 relative">
       {/* Sidebar */}
       <aside className="w-[25%] bg-[#FDF6F0] shadow-xl rounded-xl sticky top-[16vh] h-[80vh] flex flex-col justify-between">
         {/* User Info */}

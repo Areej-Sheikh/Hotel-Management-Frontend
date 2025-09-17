@@ -91,7 +91,7 @@ const AllBookings = () => {
             </button>
             {open && (
               <ul className="absolute w-full bg-[#FDF6F0] border border-[#B17F44] rounded-md mt-1 shadow-lg z-10">
-                {["All", "Pending", "Confirmed", "Cancelled"].map((status) => (
+                {["All", "Confirmed", "Cancelled"].map((status) => (
                   <li
                     key={status}
                     onClick={() => {
@@ -144,8 +144,6 @@ const AllBookings = () => {
                     className={`py-2 font-bold ${
                       booking.status.toLowerCase() === "confirmed"
                         ? "text-green-600"
-                        : booking.status.toLowerCase() === "pending"
-                        ? "text-orange-600"
                         : "text-red-600"
                     }`}
                   >
