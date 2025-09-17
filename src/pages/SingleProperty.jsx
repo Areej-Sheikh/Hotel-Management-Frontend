@@ -79,7 +79,7 @@ const SingleProperty = () => {
 
     if (hasReviewed) {
       toast.info("You have already reviewed this property ✅");
-      return; // Prevent submitting again
+      return;
     }
 
     try {
@@ -374,7 +374,7 @@ const SingleProperty = () => {
                   const isUserReview =
                     currentUser && review.user._id === currentUser.user._id;
 
-                  const isMenuOpen = openMenuReviewId === review._id; // check if this review's menu is open
+                  const isMenuOpen = openMenuReviewId === review._id;
 
                   return (
                     <div

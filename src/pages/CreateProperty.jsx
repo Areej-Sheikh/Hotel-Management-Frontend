@@ -34,124 +34,133 @@ const CreateProperty = () => {
   };
 
   return (
-    <div className="loginPage flex z-[2] top-0 left-0 w-full bg-[#FDF6F0] h-screen items-center justify-center">
-      <div className=" py-1 w-[35%] bg-[#FDF6F0] rounded-xl mt-[9%] shadow-xl ">
-        <div className="w-full py-4 relative">
-          <div className="absolute left-[3%] top-1/2 translate-y-[-50%]"></div>
-          <h1 className="text-center font-bold text-lg text-[#B17F44] ">
+    <div className="loginPage flex z-10 top-0 left-0 w-full bg-[#FDF6F0] min-h-screen items-center justify-center px-4">
+      <div className="w-full max-w-2xl mt-[10%] bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="bg-[#B17F44] py-6 px-8">
+          <h1 className="text-center text-2xl font-bold text-white">
             Create Property
           </h1>
         </div>
 
-        <div className="py-5 px-5">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="w-full border border-zinc-500 rounded-lg">
-              <div className="w-full p-4 text-md relative flex justify-center items-center gap-3 border-b border-zinc-500">
-                <label>Title:</label>
-                <input
-                  className="w-full h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
-                  type="text"
-                  {...register("title", { required: "Title is required" })}
-                />
-                {errors.title && (
-                  <p className="absolute bottom-0 left-[3%] w-full text-[red] text-xs">
-                    <i className="ri-information-fill text-[red]"></i>{" "}
-                    {errors.title.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="p-4 text-md relative w-full flex justify-center items-center gap-3 border-b border-zinc-500">
-                <label>Description:</label>
-                <input
-                  className="w-full h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
-                  type="text"
-                  {...register("description", {
-                    required: "Description is required",
-                  })}
-                />
-                {errors.description && (
-                  <p className="absolute bottom-0 left-[3%] w-full text-[red] text-xs">
-                    <i className="ri-information-fill text-[red]"></i>{" "}
-                    {errors.description.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="p-4 text-md relative w-full flex justify-center items-center gap-3 border-b border-zinc-500">
-                <label>Location:</label>
-                <input
-                  className="w-full h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
-                  type="text"
-                  {...register("location", {
-                    required: "Location is required",
-                  })}
-                />
-                {errors.location && (
-                  <p className="absolute bottom-0 left-[3%] w-full text-[red] text-xs">
-                    <i className="ri-information-fill text-[red]"></i>{" "}
-                    {errors.location.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="p-4 text-md relative w-full flex justify-center items-center gap-3 border-b border-zinc-500">
-                <label>Price (₹ per night):</label>
-                <input
-                  className="w-[65%] h-ful bg-[#FDF6F0] text-[#B17F44]l focus:outline-none text-xl"
-                  type="number"
-                  {...register("price", { required: "Price is required" })}
-                />
-                {errors.price && (
-                  <p className="absolute bottom-0 left-[3%] w-full text-[red] text-xs">
-                    <i className="ri-information-fill text-[red]"></i>{" "}
-                    {errors.price.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="p-4 text-md relative w-full flex justify-center items-center gap-3 border-b border-zinc-500">
-                <label>Amenities:</label>
-                <input
-                  className="w-full h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
-                  type="text"
-                  {...register("amenities", {
-                    required: "Amenities are required",
-                  })}
-                />
-                {errors.amenities && (
-                  <p className="absolute bottom-0 left-[3%] w-full text-[red] text-xs">
-                    <i className="ri-information-fill text-[red]"></i>{" "}
-                    {errors.amenities.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="p-4 text-md relative w-full flex justify-center items-center gap-3">
-                <label>Images:</label>
-                <input
-                  className="w-full h-full bg-[#FDF6F0] text-[#B17F44] focus:outline-none text-xl"
-                  type="url"
-                  {...register("images", {
-                    required: "Images are required",
-                    pattern: {
-                      value: /(^\s*(https?:\/\/.*)\s*$)/i,
-                      message: "Invalid image URL",
-                    },
-                  })}
-                />
-                {errors.images && (
-                  <p className="absolute bottom-0 left-[3%] w-full text-[red] text-xs">
-                    <i className="ri-information-fill text-[red]"></i>{" "}
-                    {errors.images.message}
-                  </p>
-                )}
-              </div>
+        <div className="p-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Title */}
+            <div>
+              <label className="block mb-2 font-semibold text-[#333333]">
+                Title
+              </label>
+              <input
+                type="text"
+                {...register("title", { required: "Title is required" })}
+                className="w-full text-[#B17F44] px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B17F44] focus:border-[#B17F44]"
+              />
+              {errors.title && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.title.message}
+                </p>
+              )}
             </div>
 
+            {/* Description */}
+            <div>
+              <label className="block mb-2 font-semibold text-[#333333]">
+                Description
+              </label>
+              <textarea
+                {...register("description", {
+                  required: "Description is required",
+                })}
+                className="w-full text-[#B17F44]  px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B17F44] focus:border-[#B17F44]"
+                rows={3}
+              />
+              {errors.description && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.description.message}
+                </p>
+              )}
+            </div>
+
+            {/* Location */}
+            <div>
+              <label className="block mb-2 font-semibold text-[#333333]">
+                Location
+              </label>
+              <input
+                type="text"
+                {...register("location", { required: "Location is required" })}
+                className="w-full text-[#B17F44] px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B17F44] focus:border-[#B17F44]"
+              />
+              {errors.location && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.location.message}
+                </p>
+              )}
+            </div>
+
+            {/* Price */}
+            <div>
+              <label className="block mb-2 font-semibold text-[#333333]">
+                Price (₹ per night)
+              </label>
+              <input
+                type="number"
+                {...register("price", { required: "Price is required" })}
+                className="w-full text-[#B17F44] px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B17F44] focus:border-[#B17F44]"
+              />
+              {errors.price && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.price.message}
+                </p>
+              )}
+            </div>
+
+            {/* Amenities */}
+            <div>
+              <label className="block mb-2 font-semibold text-[#333333]">
+                Amenities
+              </label>
+              <input
+                type="text"
+                {...register("amenities", {
+                  required: "Amenities are required",
+                })}
+                className="w-full px-4 py-3 border text-[#B17F44]   border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B17F44] focus:border-[#B17F44]"
+                placeholder="Comma separated amenities"
+              />
+              {errors.amenities && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.amenities.message}
+                </p>
+              )}
+            </div>
+
+            {/* Images */}
+            <div>
+              <label className="block mb-2 font-semibold text-[#333333]">
+                Image URL
+              </label>
+              <input
+                type="url"
+                {...register("images", {
+                  required: "Images are required",
+                  pattern: {
+                    value: /(^\s*(https?:\/\/.*)\s*$)/i,
+                    message: "Invalid image URL",
+                  },
+                })}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B17F44] text-[#B17F44] focus:border-[#B17F44]"
+              />
+              {errors.images && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.images.message}
+                </p>
+              )}
+            </div>
+
+            {/* Submit Button */}
             <button
-              className="w-full text-center bg-[#b17f44] mt-4 text-white rounded-md py-3"
               type="submit"
+              className="w-full bg-[#B17F44] text-white font-semibold py-3 rounded-lg shadow-md hover:bg-[#a17039] transition duration-200"
             >
               Create Property
             </button>
