@@ -16,6 +16,7 @@ const CreateProperty = () => {
   const onSubmit = async (data) => {
     const formattedData = {
       ...data,
+      price: Number(data.price),
       images: data.images.split(", "),
       amenities: data.amenities.split(", "),
     };
@@ -148,7 +149,7 @@ const CreateProperty = () => {
                     message: "Invalid image URL",
                   },
                 })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B17F44] text-[#B17F44] focus:border-[#B17F44]"
+                className="w-full h-16 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B17F44] text-[#B17F44] focus:border-[#B17F44]"
               />
               {errors.images && (
                 <p className="text-red-500 text-sm mt-1">

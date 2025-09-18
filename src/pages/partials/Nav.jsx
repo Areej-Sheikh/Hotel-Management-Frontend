@@ -123,7 +123,7 @@ const Nav = () => {
                     </h3>
                     <h3
                       onClick={loginHandler}
-                      className=" text-medium font-semibold px-4 text-[#B17F44] hover:bg-[#B17F44]/20 cursor-pointer transition-all py-6 border-b border-[#B17F44]"
+                      className=" text-medium font-semibold px-4 text-[#B17F44] hover:bg-[#B17F44]/20 cursor-pointer transition-all py-6 border-[#B17F44]"
                     >
                       Log in
                     </h3>
