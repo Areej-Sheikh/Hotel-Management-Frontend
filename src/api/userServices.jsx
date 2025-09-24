@@ -6,7 +6,9 @@ export const currentUserService = async () => {
     const { data } = await axios.get("/users/current-user");
     return data;
   } catch (error) {
-    toast.error(error.response.data.message);
+    toast.error(
+      error?.response?.data?.message || error.message || "Something went wrong"
+    );
   }
 };
 
@@ -15,7 +17,9 @@ export const loginService = async (userData) => {
     const { data } = await axios.post("/users/login", userData);
     return data;
   } catch (error) {
-    toast.error(error.response.data.message);
+    toast.error(
+      error?.response?.data?.message || error.message || "Something went wrong"
+    );
   }
 };
 
@@ -24,7 +28,9 @@ export const signupService = async (userData) => {
     const { data } = await axios.post("/users/signup", userData);
     return data;
   } catch (error) {
-    toast.error(error.response.data.message);
+    toast.error(
+      error?.response?.data?.message || error.message || "Something went wrong"
+    );
   }
 };
 
@@ -42,7 +48,9 @@ export const putProfileService = async (userData) => {
     const { data } = await axios.put("/users/profile", userData);
     return data;
   } catch (error) {
-    toast.error(error.response.data.message);
+    toast.error(
+      error?.response?.data?.message || error.message || "Something went wrong"
+    );
   }
 };
 
@@ -51,6 +59,8 @@ export const resetPasswordService = async (email) => {
     const { data } = await axios.post("users/reset-password", email);
     return data;
   } catch (error) {
-    toast.error(error.response.data.message);
+    toast.error(
+      error?.response?.data?.message || error.message || "Something went wrong"
+    );
   }
 };
