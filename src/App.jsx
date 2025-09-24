@@ -19,7 +19,7 @@ import AllUser from "./pages/partials/AllUser";
 import AllPayment from "./pages/partials/AllPayment";
 import Allproperties from "./pages/partials/AllProperties";
 import AllBookings from "./pages/partials/AllBookings";
-import IsAdmin from "./components/auth/isAdmin";
+import IsAdmin from "./components/auth/IsAdmin";
 import NotFound from "./pages/partials/NotFound";
 
 const App = () => {
