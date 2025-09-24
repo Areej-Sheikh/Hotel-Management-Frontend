@@ -29,7 +29,7 @@ const Signup = ({ display, setDisplay }) => {
           <div className="absolute left-[3%] top-1/2 -translate-y-1/2">
             <i
               onClick={() => setDisplay(false)}
-              className="ri-close-fill text-[#333333] cursor-pointer"
+              className="ri-close-fill  text-2xl text-[#333333] cursor-pointer"
             ></i>
           </div>
           <h1 className="text-center font-bold text-lg text-[#B17F44]">

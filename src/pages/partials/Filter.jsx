@@ -35,7 +35,7 @@ const Filter = ({ display, setDisplay }) => {
             <i
               onClick={() => setDisplay(false)}
               aria-label="Close filter"
-              className="ri-close-fill text-zinc-800 cursor-pointer"
+              className="ri-close-fill   text-2xl text-zinc-800 cursor-pointer"
             />
           </div>
           <h1 className="text-center font-bold text-lg text-[#B17F44]">
